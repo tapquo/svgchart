@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>SvgChart</title>
+    <style type="text/css">
+        [data-svgchart] {
+            margin: 50px auto;
+            width: 500px;
+            height: 400px;
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div data-svgchart="">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" >
+            <polygon id="star" points="100,10 40,180 190,60 10,60 160,300"
+                style="
+                    fill:lime;
+                    stroke:purple;
+                    stroke-width:5;
+                    fill-rule:evenodd;
+                "
+            >
+        </svg>
+    </div>
+</body>
+<script type="text/javascript">
+
+    var chart = document.querySelector("[data-svgchart]");
+    var star = document.querySelector("#star");
+
+    star.style.fill = "lime";
+    star.style.stroke = "purple";
+    star.style.strokeWidth = "2";
+    star.style.fillRule = "evenodd";
+
+</script>
+</html>

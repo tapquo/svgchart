@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>SBG Charts tests</title>
+    <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #bar_chart {
+            background-color: #eee;
+            border: 1px solid #ddd;
+            margin: 0 auto;
+            width: 500px;
+            height: 200px;
+        }
+</style>
+</head>
+<body>
+
+<!--
+    <svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+        <style type="text/css" >
+            circle {
+               stroke: #006600;
+               fill:   #00cc00;
+            }
+        </style>
+
+        <circle  cx="40" cy="40" r="24"/>
+    </svg>
+ -->
+
+
+    <svg id="bar_chart" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
+    <script type="text/javascript">
+
+        var chart;
+
+        var DATA = [
+            {label: "Sports", value: 70},
+            {label: "Economy", value: 20},
+            {label: "Games", value: 100},
+            {label: "Fails", value: 90}
+        ];
+
+        document.body.onload = function() {
+            chart = new Chart.Bar(document.getElementById("bar_chart"));
+            chart.setData(DATA);
+            chart.width(500).height(200);
+            chart.draw();
+            console.log(chart);
+        };
+
+    </script>
+</body>
+</html>
