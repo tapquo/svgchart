@@ -42,7 +42,7 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ["<%= source.coffee %>"]
-        tasks: ["concat", "coffee", "uglify"]
+        tasks: ["coffee", "uglify"]
       styles:
         files: ["<%= source.styles %>"]
         tasks: ["stylus"]

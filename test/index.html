@@ -9,41 +9,46 @@
             margin: 0;
             padding: 0;
         }
-        #bar_chart {
+        .chart {
             background-color: #eee;
             border: 1px solid #ddd;
             margin: 0 auto;
-            width: 500px;
             height: 200px;
         }
 </style>
 </head>
 <body>
 
-<!--
-    <svg xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <svg id="bar_chart_test" class="chart" xmlns="http://www.w3.org/2000/svg">
+        <style>@import url(../dist/svgchart.0.0.1.css);</style>
+        <rect width="20" height="20" fill="red"></rect>
+        <rect width="20" height="20" fill="red"></rect>
+        <rect width="20" height="20" fill="red"></rect>
+        <rect width="20" height="20" fill="red"></rect>
+    </svg>
+    -->
 
-        <style type="text/css" >
-            circle {
-               stroke: #006600;
-               fill:   #00cc00;
-            }
+    <!--
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <style type="text/css">
+        circle {
+           stroke: #006600;
+           fill:   #00cc00;
+        }
         </style>
-
         <circle  cx="40" cy="40" r="24"/>
     </svg>
- -->
+    -->
 
-
-    <svg id="bar_chart" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg id="bar_chart" class="chart" width="500" height="200" xmlns="http://www.w3.org/2000/svg"></svg>
 
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
         var chart;
 
-        var DATA = [
+        var MOCK_DATA = [
             {label: "Sports", value: 70},
             {label: "Economy", value: 20},
             {label: "Games", value: 100},
@@ -52,7 +57,8 @@
 
         document.body.onload = function() {
             chart = new Chart.Bar(document.getElementById("bar_chart"));
-            chart.setData(DATA);
+            chart.setTheme("../dist/svgchart.0.0.1.css");
+            chart.setData(MOCK_DATA);
             chart.width(500).height(200);
             chart.draw();
             console.log(chart);
