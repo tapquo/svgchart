@@ -8,7 +8,3 @@ Maths =
 
   rangeToPercent: (number, min, max) ->
     (number - min) * 100 / (max - min)
-
-  percentToPixels: (percent, min, max) ->
-    max - ((max - min) * (percent / 100) + min)
-

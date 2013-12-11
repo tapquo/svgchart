@@ -4,10 +4,8 @@ class Base
     @data = []
     @ui_elements = []
     do @_createSVG
-    # <svg id="bar_chart" class="chart" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    #     <text x="0" y="15" fill="red">I love SVG!</text>
-    # </svg>
-
+    @width = @svg.offsetWidth
+    @height = @svg.offsetHeight
 
   setData: (@data) -> @
 
