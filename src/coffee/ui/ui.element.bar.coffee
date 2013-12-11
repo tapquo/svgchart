@@ -1,0 +1,1 @@
+class UI.Element.Bar extends UI.Element

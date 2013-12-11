@@ -1,40 +1,73 @@
-class Chart.Bar extends Core.Chart
+class Chart.Bar extends Base
 
-  setMax: (data) ->
-    @max = 0
-    @max = item.value for item in data when item.value > @max
+  BARS_PADDING = 2
+  RULER_LINES  = 5
+
+  constructor: ->
+    super
 
   calcBarWidth: ->
     @barWidth = @container.getAttribute("width") / @data.length
-    console.log @barWidth
 
-  _drawItem: (data) ->
-    label = data.label
-    value = data.value
+  setRuler: (@ruler_max, @ruler_min, @ruler_lines = RULER_LINES) -> @
 
-    el = Core.Element.bar({
-      width: 20,
-      height: 20,
-      x: 100,
-      y: 100,
-      fill: "red"
-    })
+  calcRuler: ->
+    @ruler_lines = @ruler_lines or RULER_LINES
+    if !@ruler_max or !@ruler_min
+      if @max_value >= 0 and @min_value >= 0
+        @ruler_max = @max_value
+        @ruler_min = 0
+      else if @max_value > 0 and @min_value < 0
+        @ruler_max = @max_value
+        @ruler_min = @min_value
+      else if @max_value < 0 and @min_value < 0
+        @ruler_max = 0
+        @ruler_min = @min_value
 
-    el2 = Core.Element.bar({
-      width: 20,
-      height: 20,
-      x: 10,
-      y: 10,
-      fill: "blue"
-      style: ""
-    })
-    @appendUIElement el
-    @appendUIElement el2
+    diff = (@ruler_max - @ruler_min) / @ruler_lines
+    @ruler_divisors = ((@ruler_min + diff * i) for i in [0..@ruler_lines - 1])
+
+  drawRuler: ->
+    delta = 100 / @ruler_lines
+    for divisor, i in @ruler_divisors
+      y = delta * i
+      uiel = new UI.Element "line", {
+        x1: "0%",
+        x2: "100%"
+        y1: "#{y}%"
+        y2: "#{y}%"
+        style: "stroke:rgb(0,0,0);stroke-width:2;opacity:.1"
+      }
+      @appendUIElement(uiel)
+
+  drawItem: (itemData, index) ->
+    label = itemData.label
+    value = itemData.value
+    x = (@barWidth * index) + (BARS_PADDING / 2)
+    width = @barWidth - BARS_PADDING
+    width = if width < 1 then 1 else width
+    height = Maths.rangeToPercent(value, @ruler_min, @ruler_max)
+    y = Maths.percentToPixels(height, 0, @height)
+
+    console.log "===================================================="
+    console.log "Para #{value} --> ", parseInt(height) + " % y y:#{y}"
+
+    bar = new UI.Element.Bar "rect",
+      width   : width
+      height  : height + "%"
+      x       : x
+      y       : y
+      fill    : "blue"
+
+    @appendUIElement bar
+
 
   draw: ->
-    @setMax(@data)
-    @calcBarWidth()
-    current = 0
-    for i, bar in @data
-      console.log(i)
-      @_drawItem(bar)
+    vals = (item.value for item in @data)
+    @max_value = Maths.max(vals)
+    @min_value = Maths.min(vals)
+    do @calcBarWidth
+    do @calcRuler
+    @drawItem(itemData, index) for itemData, index in @data
+    do @drawRuler
+

@@ -41,7 +41,9 @@
     </svg>
     -->
 
-    <svg id="bar_chart" class="chart" width="500" height="200" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg id="bar_chart" class="chart" width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="15" fill="red">I love SVG!</text>
+    </svg>
 
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
@@ -49,10 +51,20 @@
         var chart;
 
         var MOCK_DATA = [
-            {label: "Sports", value: 70},
-            {label: "Economy", value: 20},
-            {label: "Games", value: 100},
-            {label: "Fails", value: 90}
+            {label: "Sports",   value: 520},
+            {label: "Economy",  value: 120},
+            {label: "Games",    value: 910},
+            {label: "Games",    value: 0},
+            {label: "Sports",   value: -170},
+            {label: "Economy",  value: 20},
+            {label: "Games",    value: 1130},
+            {label: "Sports",   value: 701},
+            {label: "Economy",  value: 230},
+            {label: "Games",    value: 410},
+            {label: "Sports",   value: 750},
+            {label: "Economy",  value: 180},
+            {label: "Games",    value: 1120},
+            {label: "Fails",    value: 112}
         ];
 
         document.body.onload = function() {
