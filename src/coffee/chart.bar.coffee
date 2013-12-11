@@ -1,7 +1,6 @@
 class Chart.Bar extends Base
 
   RULER_LINES  = 5
-  RULER_STYLE = "stroke: rgb(0,0,0); stroke-width: 1; opacity: .3"
 
   DRAWABLE_MARGIN_BOTTOM  = 10
   DRAWABLE_MARGIN_LEFT    = 10
@@ -45,8 +44,8 @@ class Chart.Bar extends Base
           x2: "#{100 - DRAWABLE_MARGIN_RIGHT}%"
           y1: "#{y}%"
           y2: "#{y}%"
-          style: RULER_STYLE
         }
+        uiel.addClass "ruler"
         @appendUIElement(uiel)
 
   drawItem: (itemData, index) ->
@@ -58,26 +57,28 @@ class Chart.Bar extends Base
     height = Maths.rangeToPercent(value, @ruler_min, @ruler_max)
     height -= (DRAWABLE_MARGIN_TOP + DRAWABLE_MARGIN_BOTTOM)
     y = (100 - DRAWABLE_MARGIN_BOTTOM - height)
-    @appendUIElement new UI.Element.Bar "rect", {
+    uiel = new UI.Element.Bar "rect", {
       width   : "#{width}%"
       height  : "#{height}%"
       x       : "#{x}%"
       y       : "#{y}%"
-      fill    : "blue"
     }
+    uiel.addClass "bar"
+    @appendUIElement uiel
 
   drawDrawableContainer: ->
     width = 100 - DRAWABLE_MARGIN_LEFT - DRAWABLE_MARGIN_RIGHT
     height = 100 - DRAWABLE_MARGIN_TOP - DRAWABLE_MARGIN_BOTTOM
     x = DRAWABLE_MARGIN_LEFT
     y = DRAWABLE_MARGIN_TOP
-    @appendUIElement new UI.Element.Bar "rect",
+    uiel = new UI.Element.Bar "rect",
       width   : "#{100 - DRAWABLE_MARGIN_LEFT - DRAWABLE_MARGIN_RIGHT}%"
       height  : "#{100 - DRAWABLE_MARGIN_TOP - DRAWABLE_MARGIN_BOTTOM}%"
       x       : "#{DRAWABLE_MARGIN_LEFT}%"
       y       : "#{DRAWABLE_MARGIN_TOP}%"
-      fill    : "transparent"
-      style   : RULER_STYLE
+
+    uiel.addClass "ruler"
+    @appendUIElement uiel
 
   draw: ->
     vals = (item.value for item in @data)

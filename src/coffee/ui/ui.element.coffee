@@ -8,7 +8,10 @@ class UI.Element
     if value then @element.setAttribute attribute, value
     else return @element.getAttribute attribute
 
-  class: (className) ->
-    if className then @element.setAttribute "class", className
-    else return @element.getAttribute "class"
+  addClass: (className) ->
+    current = @attr("class")
+    unless current then @attr("class", className)
+    else if current.split(" ").indexOf(className) is -1
+      @attr "class", "#{current} #{className}"
+
 
