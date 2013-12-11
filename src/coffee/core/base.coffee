@@ -31,6 +31,3 @@ class Base
     @svg.setAttribute "width", "100%"
     @svg.setAttribute "height", "100%"
     @container.appendChild @svg
-
-  width: (@width) -> @
-  height: (@height) -> @
