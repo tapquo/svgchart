@@ -1,13 +1,15 @@
 class Chart.Bar extends Base
 
-  BARS_PADDING = 2
+  BARS_PADDING = 1
   RULER_LINES  = 5
 
   constructor: ->
     super
+    @drawableAreaLimits = []
 
   calcBarWidth: ->
-    @barWidth = @container.getAttribute("width") / @data.length
+    @barWidth = 100 / @data.length
+    # @barWidth = @container.getAttribute("width") / @data.length
 
   setRuler: (@ruler_max, @ruler_min, @ruler_lines = RULER_LINES) -> @
 
@@ -24,8 +26,12 @@ class Chart.Bar extends Base
         @ruler_max = 0
         @ruler_min = @min_value
 
-    diff = (@ruler_max - @ruler_min) / @ruler_lines
+
+    diff = (@ruler_max - @ruler_min) / (@ruler_lines - 1)
     @ruler_divisors = ((@ruler_min + diff * i) for i in [0..@ruler_lines - 1])
+
+    console.log "Ruler [#{@ruler_max}:#{@ruler_min}]"
+    console.log "RulerDivisors ", @ruler_divisors
 
   drawRuler: ->
     delta = 100 / @ruler_lines
@@ -47,15 +53,15 @@ class Chart.Bar extends Base
     width = @barWidth - BARS_PADDING
     width = if width < 1 then 1 else width
     height = Maths.rangeToPercent(value, @ruler_min, @ruler_max)
-    y = Maths.percentToPixels(height, 0, @height)
+    y = (100 - height) + "%"
 
     console.log "===================================================="
-    console.log "Para #{value} --> ", parseInt(height) + " % y y:#{y}"
+    console.log "Value #{value} --> Height:#{parseInt(height)}, PosY:#{parseInt(y)}%"
 
     bar = new UI.Element.Bar "rect",
-      width   : width
+      width   : width + "%"
       height  : height + "%"
-      x       : x
+      x       : x + "%"
       y       : y
       fill    : "blue"
 
@@ -66,6 +72,7 @@ class Chart.Bar extends Base
     vals = (item.value for item in @data)
     @max_value = Maths.max(vals)
     @min_value = Maths.min(vals)
+    console.log "MaxMin [#{@max_value}:#{@min_value}]"
     do @calcBarWidth
     do @calcRuler
     @drawItem(itemData, index) for itemData, index in @data

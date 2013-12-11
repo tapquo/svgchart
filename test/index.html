@@ -2,18 +2,15 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>SBG Charts tests</title>
+    <title>SVG Charts tests</title>
     <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
     <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
-        }
         .chart {
             background-color: #eee;
             border: 1px solid #ddd;
             margin: 0 auto;
-            height: 200px;
+            height: 500px;
+            width: 100%;
         }
 </style>
 </head>
@@ -27,23 +24,21 @@
         <rect width="20" height="20" fill="red"></rect>
         <rect width="20" height="20" fill="red"></rect>
     </svg>
-    -->
-
-    <!--
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <style type="text/css">
-        circle {
-           stroke: #006600;
-           fill:   #00cc00;
-        }
+            circle {
+               stroke: #006600;
+               fill:   #00cc00;
+            }
         </style>
         <circle  cx="40" cy="40" r="24"/>
     </svg>
     -->
 
-    <svg id="bar_chart" class="chart" width="500" height="200" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="15" fill="red">I love SVG!</text>
-    </svg>
+    <div id="bar_chart" class="chart">
+
+    </div>
+
 
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
@@ -51,24 +46,25 @@
         var chart;
 
         var MOCK_DATA = [
-            {label: "Sports",   value: 520},
-            {label: "Economy",  value: 120},
-            {label: "Games",    value: 910},
-            {label: "Games",    value: 0},
-            {label: "Sports",   value: -170},
-            {label: "Economy",  value: 20},
-            {label: "Games",    value: 1130},
-            {label: "Sports",   value: 701},
-            {label: "Economy",  value: 230},
-            {label: "Games",    value: 410},
-            {label: "Sports",   value: 750},
-            {label: "Economy",  value: 180},
-            {label: "Games",    value: 1120},
-            {label: "Fails",    value: 112}
+            { label: "Sports",   value: 520},
+            { label: "Economy",  value: 120},
+            { label: "Games",    value: 910},
+            { label: "Games",    value: 0},
+            { label: "Sports",   value: -170},
+            { label: "Economy",  value: 20},
+            { label: "Games",    value: 1130},
+            { label: "Sports",   value: 701},
+            { label: "Economy",  value: 230},
+            { label: "Games",    value: 410},
+            { label: "Sports",   value: 750},
+            { label: "Economy",  value: 180},
+            { label: "Games",    value: 1120},
+            { label: "Fails",    value: 112}
         ];
 
         document.body.onload = function() {
             chart = new Chart.Bar(document.getElementById("bar_chart"));
+
             chart.setTheme("../dist/svgchart.0.0.1.css");
             chart.setData(MOCK_DATA);
             chart.width(500).height(200);
