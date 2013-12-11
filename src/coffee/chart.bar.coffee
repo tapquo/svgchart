@@ -1,12 +1,12 @@
 class Chart.Bar extends Base
 
-  RULER_LINES     = 5
-  RULER_FONT_SIZE = 10
+  RULER_LINES     = 7
+  RULER_FONT_SIZE = 15
 
   DRAWABLE_MARGIN_BOTTOM  = 10
-  DRAWABLE_MARGIN_LEFT    = 7
-  DRAWABLE_MARGIN_TOP     = 1
-  DRAWABLE_MARGIN_RIGHT   = 1
+  DRAWABLE_MARGIN_TOP     = 10
+  DRAWABLE_MARGIN_LEFT    = 15
+  DRAWABLE_MARGIN_RIGHT   = 0
 
   BARS_PADDING = 1
 
@@ -15,35 +15,30 @@ class Chart.Bar extends Base
     super
     @svg.setAttribute "data-svgchart-type", "bar"
 
-  calcBarWidth: ->
-    @barWidth = @drawable_area_width / @data.length
-
   calcRuler: ->
     @ruler_lines = @ruler_lines or RULER_LINES
     if @max_value >= 0 and @min_value >= 0
-      @ruler_zero_pos = 100
+      @ruler_zero_pos = 0
       @ruler_max = @max_value
       @ruler_min = 0
     else if @max_value > 0 and @min_value < 0
       @ruler_max = @max_value
       @ruler_min = @min_value
       @ruler_zero_pos = Maths.rangeToPercent(0, @ruler_min, @ruler_max)
-      console.log "Zero pos :: #{@ruler_zero_pos}"
-    else if @max_value < 0 and @min_value < 0
-      @ruler_zero_pos = 0
+    else if @max_value <= 0 and @min_value <= 0
+      @ruler_zero_pos = 100
       @ruler_max = 0
       @ruler_min = @min_value
 
     delta = (@ruler_max - @ruler_min) / (@ruler_lines - 1)
-    @ruler_divisors = (parseInt(@ruler_min + delta * i) for i in [0..@ruler_lines - 1])
-    console.log "Ruler [#{@ruler_max}:#{@ruler_min}]"
-    console.log "RulerDivisors ", @ruler_divisors
+    @ruler_divisors = (parseFloat(@ruler_min + delta * i).toFixed(1) for i in [0..@ruler_lines - 1])
+
 
   drawRuler: ->
     delta = (100 - DRAWABLE_MARGIN_BOTTOM - DRAWABLE_MARGIN_TOP) / (@ruler_lines - 1)
+    zeroY = @ruler_zero_pos
     for divisorVal, i in @ruler_divisors.reverse()
       y = (delta * i) + DRAWABLE_MARGIN_TOP
-      # Paint label
       #@TODO :: Fix this deltaText (wrong calc)
       deltaText = (RULER_FONT_SIZE * 100 / @height / 2) - 0.25
       textUI = new UI.Element "text", {
@@ -66,20 +61,31 @@ class Chart.Bar extends Base
         }
         @appendUIElement(uiel)
 
+
+  # calcPercentHeight = (percentValue) ->
+  #   # 100 -> @drawable_area_height
+  #   # 50 -> @drawable_area_height/2
+  #   # 0 -> @drawable_area_height * 0
+  #   return
+
+
   drawItem: (itemData, index) ->
     label = itemData.label
     value = itemData.value
     x = (@barWidth * index) + (BARS_PADDING / 2) + DRAWABLE_MARGIN_LEFT
     width = @barWidth - BARS_PADDING
     width = if width < 1 then 1 else width
-    height = @drawable_area_height * value / 100
-    zeroDiff = @drawable_area_height * @ruler_zero_pos / 100
 
-    if height < 0
-      y = (100 - DRAWABLE_MARGIN_BOTTOM) - zeroDiff
-      height = Math.abs(height)
+    value = Maths.rangeToPercent(value, @min_value, @max_value) - @ruler_zero_pos
+    height = Math.abs(@drawable_area_height * value / 100)
+
+    marginedZeroDiff = (@drawable_area_height * @ruler_zero_pos / 100)
+    if value < 0
+      y = 100 - DRAWABLE_MARGIN_BOTTOM - marginedZeroDiff
     else
-      y = (100 - DRAWABLE_MARGIN_BOTTOM - height) - zeroDiff
+      y = 100 - DRAWABLE_MARGIN_BOTTOM - height - marginedZeroDiff
+
+    height = if height is 0 then 0.5 else height
 
     uiel = new UI.Element.Bar "rect", {
       class   :"bar"
@@ -89,6 +95,7 @@ class Chart.Bar extends Base
       height  :"#{height}%"
     }
     @appendUIElement uiel
+
 
   calcDrawableArea: ->
     @drawable_area_width  = 100 - DRAWABLE_MARGIN_LEFT - DRAWABLE_MARGIN_RIGHT
@@ -106,10 +113,10 @@ class Chart.Bar extends Base
 
   draw: ->
     vals = (item.value for item in @data)
+    do @calcDrawableArea
     @max_value = Maths.max(vals)
     @min_value = Maths.min(vals)
-    do @calcDrawableArea
-    do @calcBarWidth
+    @barWidth = @drawable_area_width / @data.length
     do @calcRuler
 
     @drawItem(itemData, index) for itemData, index in @data
