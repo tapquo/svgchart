@@ -14,4 +14,5 @@ class UI.Element
     else if current.split(" ").indexOf(className) is -1
       @attr "class", "#{current} #{className}"
 
-
+  bind: (eventName, callback) ->
+    @element.addEventListener(eventName, callback, false)
