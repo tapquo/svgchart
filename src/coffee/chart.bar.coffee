@@ -4,7 +4,7 @@ class Chart.Bar extends Base
   RULER_FONT_SIZE = 10
 
   DRAWABLE_MARGIN_BOTTOM  = 10
-  DRAWABLE_MARGIN_LEFT    = 8
+  DRAWABLE_MARGIN_LEFT    = 7
   DRAWABLE_MARGIN_TOP     = 1
   DRAWABLE_MARGIN_RIGHT   = 1
 
@@ -73,7 +73,14 @@ class Chart.Bar extends Base
     width = @barWidth - BARS_PADDING
     width = if width < 1 then 1 else width
     height = @drawable_area_height * value / 100
-    y = (100 - DRAWABLE_MARGIN_BOTTOM - height)
+    zeroDiff = @drawable_area_height * @ruler_zero_pos / 100
+
+    if height < 0
+      y = (100 - DRAWABLE_MARGIN_BOTTOM) - zeroDiff
+      height = Math.abs(height)
+    else
+      y = (100 - DRAWABLE_MARGIN_BOTTOM - height) - zeroDiff
+
     uiel = new UI.Element.Bar "rect", {
       class   :"bar"
       x       :"#{x}%"

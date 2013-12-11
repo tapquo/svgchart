@@ -7,6 +7,10 @@ class Base
     @width = @svg.offsetWidth
     @height = @svg.offsetHeight
 
+  setTitle: (@title) -> @
+
+  setDescription: (@description) -> @
+
   setData: (@data) -> @
 
   addData: (obj) -> @data.push(obj)

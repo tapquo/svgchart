@@ -5,44 +5,16 @@
     <title>SVG Charts tests</title>
     <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
     <style type="text/css">
-        /** {
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            width: 100%;
-            height: 100%;
-        }*/
         .chart {
-            position:absolute;
             background-color: #eee;
             border: 1px solid #ddd;
             margin: 0 auto;
-            width: 500px;
+            width: 50%;
             height: 600px;
         }
 </style>
 </head>
 <body>
-
-    <!--
-    <svg id="bar_chart_test" class="chart" xmlns="http://www.w3.org/2000/svg">
-        <style>@import url(../dist/svgchart.0.0.1.css);</style>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <style type="text/css">
-            circle {
-               stroke: #006600;
-               fill:   #00cc00;
-            }
-        </style>
-        <circle  cx="40" cy="40" r="24"/>
-    </svg>
-    -->
 
     <div id="bar_chart" class="chart"></div>
 
@@ -54,13 +26,31 @@
         var MOCK_DATA = [
             { label: "20/02/1982",   value: 0},
             { label: "20/02/1983",  value: 25},
-            { label: "20/02/1983",  value: 50},
-            { label: "20/02/1983",  value: 75},
-            { label: "20/02/1983",  value: 100}
+            { label: "20/02/1984",  value: 50},
+            { label: "20/02/1985",  value: 75},
+            { label: "20/02/1986",  value: 100}
         ];
 
+        var MOCK_DATA = [
+            { label: "20/02/1982",   value: -50},
+            { label: "20/02/1983",  value: -25},
+            { label: "20/02/1985",  value: 25},
+            { label: "20/02/1986",  value: 50}
+        ];
+
+        // var MOCK_DATA = [
+        //     { label: "20/02/1982",   value: -100},
+        //     { label: "20/02/1983",  value: -75},
+        //     { label: "20/02/1984",  value: -50},
+        //     { label: "20/02/1985",  value: -25},
+        //     { label: "20/02/1986",  value: 0}
+        // ];
+
         document.body.onload = function() {
-            chart = new Chart.Bar(document.getElementById("bar_chart"));
+            var container = document.getElementById("bar_chart");
+            chart = new Chart.Bar(container);
+            chart.setTitle("Esto es una prueba de charts");
+            chart.setDescription("La description de este chart");
             chart.setTheme("../dist/svgchart.0.0.1.css");
             chart.setData(MOCK_DATA);
             chart.draw();
