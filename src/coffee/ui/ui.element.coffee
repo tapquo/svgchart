@@ -14,5 +14,14 @@ class UI.Element
     else if current.split(" ").indexOf(className) is -1
       @attr "class", "#{current} #{className}"
 
+  removeClass: (className) ->
+    current = @attr("class")
+    if current
+      classes = current.split(" ")
+      new_classes = classes.filter (cls) -> cls != className
+      @attr "class", new_classes.join(" ")
+
+  remove: -> @element.remove()
+
   bind: (eventName, callback) ->
     @element.addEventListener(eventName, callback, false)
