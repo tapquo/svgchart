@@ -48,26 +48,61 @@
         //     { label: "20/02/1983",  value: 10}
         // ];
 
-        var MOCK_DATA = [
-            { label: "20/02/1982",   value: -100},
+        var MOCK = [];
+        MOCK[0] = [
+            { label: "20/02/1983",  value: 0},
+            { label: "20/02/1983",  value: 25},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 75},
+            { label: "20/02/1983",  value: 100}
+        ];
+        MOCK[1] = [
+            { label: "20/02/1983",  value: -50},
+            { label: "20/02/1983",  value: 50}
+        ];
+        MOCK[2] = [
+            { label: "20/02/1983",  value: -25},
+            { label: "20/02/1983",  value: 75}
+        ];
+        MOCK[3] = [
             { label: "20/02/1983",  value: -75},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1984",  value: -50},
-            { label: "20/02/1985",  value: -25},
-            { label: "20/02/1986",  value: 0}
+            { label: "20/02/1983",  value: 25}
+        ];
+        MOCK[4] = [
+            { label: "20/02/1983",  value: -100},
+            { label: "20/02/1983",  value: 0}
+        ];
+        MOCK[5] = [
+            { label: "20/02/1983",  value: -200},
+            { label: "20/02/1983",  value: -100}
+        ];
+        MOCK[6] = [
+            { label: "20/02/1983",  value: 150},
+            { label: "20/02/1983",  value: 200}
+        ];
+        MOCK[7] = [
+            { label: "20/02/1983",  value: -150},
+            { label: "20/02/1983",  value: -148},
+            { label: "20/02/1983",  value: -100},
+            { label: "20/02/1983",  value: -50},
+            { label: "20/02/1983",  value: 0},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 100},
+            { label: "20/02/1983",  value: 148},
+            { label: "20/02/1983",  value: 150}
         ];
 
+        var toTest = 7;
+
         document.body.onload = function() {
-            for(var i = 0; i < 1; i++) {
-                var container = document.getElementById("bar_chart");
-                chart = new Chart.Bar(container);
-                chart.setTitle("Esto es una prueba de charts");
-                chart.setDescription("La description de este chart");
-                chart.setTheme("../dist/svgchart.0.0.1.css");
-                chart.setData(MOCK_DATA);
-                chart.draw();
-                console.log(chart);
-            }
+            var container = document.getElementById("bar_chart");
+            chart = new Chart.Bar(container);
+            chart.setTitle("Esto es una prueba de charts");
+            chart.setDescription("La description de este chart");
+            chart.setTheme("../dist/svgchart.0.0.1.css");
+            chart.setData(MOCK[toTest]);
+            chart.draw();
+            // console.log(chart);
         };
 
     </script>
