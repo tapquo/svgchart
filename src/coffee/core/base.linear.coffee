@@ -52,13 +52,6 @@ class Base.Linear extends Base
     factor_y = @calcItemY index, value, factor_h
     factor_w = @calcItemW value
     factor_x = @calcItemX index, value, factor_w
-
-    console.log "---------- Value #{value} ----------"
-    console.log " - factor W :: ", factor_w
-    console.log " - factor X :: ", factor_x
-    console.log " - factor Y :: ", factor_y
-    console.log " - factor H :: ", factor_h
-
     attributes =
       x       : "#{@drawable_area_width * factor_x + @margins.left}%"
       y       : "#{@drawable_area_height * factor_y + @margins.top}%"
@@ -77,8 +70,9 @@ class Base.Linear extends Base
 
   # Appends bar bottom label
   appendBarLabel: (label, index) ->
+    x = @calcItemX(index) * @drawable_area_width + @margins.left + @item_anchor_size*0.5
     attributes = {
-      x: (@calcItemX(index) + @bar_anchor_size/2 - BARS_PADDING/2) + "%"
+      x: "#{x}%"
       y: (@height - (@margins.bottom / 2)) + "%"
       "text-anchor"   : "middle"
       "pointer-events": "none"

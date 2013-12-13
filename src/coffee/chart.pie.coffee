@@ -1,0 +1,1 @@
+class Chart.Pie extends Base.Angular
