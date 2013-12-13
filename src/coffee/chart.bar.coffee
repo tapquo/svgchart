@@ -5,7 +5,6 @@ class Chart.Bar extends Base.Linear
   constructor: ->
     super
     @svg.setAttribute "data-svgchart-type", "bar"
-    @ruler.axis = "y"
     @setMargins 2, 2, 15, 15
 
   # Sets width of the bar
@@ -28,7 +27,8 @@ class Chart.Bar extends Base.Linear
 
   # Returns position y factor of a bar
   calcItemY: (index, value, height) ->
-    if value < 0 then 1 - @ruler.zero else 1 - @ruler.zero + height
+    v = if value < 0 then @ruler.zero else @ruler.zero + height
+    return 1 - v
 
   # Attaches events to bar UI element
   attachItemEvents: (bar, barData) ->
