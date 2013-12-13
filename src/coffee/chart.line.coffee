@@ -30,9 +30,6 @@ class Chart.Line extends Base.Linear
   calcItemY: (index, value, height) ->
     ((@item_anchor_size * index) + (BARS_PADDING * 0.5)) / @drawable_area_height
 
-
-
-
   # Attaches events to bar UI element
   attachItemEvents: (bar, barData) ->
     # console.log "no events yet..."

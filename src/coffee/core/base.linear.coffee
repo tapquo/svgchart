@@ -94,14 +94,16 @@ class Base.Linear extends Base
     @ruler.setLinearCoords height, width, @margins
     do @drawRuleLabels
     @drawRuleLine coords for coords in @ruler.coords
-    zeroY = @drawable_area_height * (1 - @ruler.zero) + @margins.top
-    zero_coords = {
-      x1: @margins.left
-      x2: @width - @margins.right
-      y1: zeroY
-      y2: zeroY
-    }
-    @drawRuleLine zero_coords, true
+    @ruler.setZeroCoords()
+    # @drawRuleLine @ruler.zero_coords
+    # zeroY = @drawable_area_height * (1 - @ruler.zero) + @margins.top
+    # zero_coords = {
+    #   x1: @margins.left
+    #   x2: @width - @margins.right
+    #   y1: zeroY
+    #   y2: zeroY
+    # }
+    # @drawRuleLine zero_coords, true
 
   drawRuleLine: (coords, isZero=false) ->
     zeroClass = if isZero then " zero" else ""
