@@ -70,6 +70,7 @@ class Chart.Bar extends Base
       width   : "#{realW}%"
       height  : "#{realH}%"
     @appendBar attributes, data
+    @appendBarLabel(data.label, index)
 
   # Returns real X position of a bar based on index
   calcItemX: (index) ->
@@ -95,6 +96,19 @@ class Chart.Bar extends Base
     uiel = new UI.Element.Bar "rect", attributes
     @attachBarEvents(uiel, barData)
     @appendUIElement uiel
+
+  # Appends bar bottom label
+  appendBarLabel: (label, index) ->
+    attributes = {
+      x: (@calcItemX(index) + @bar_width/2 - BARS_PADDING/2) + "%"
+      y: (@height - (@margins.bottom / 2)) + "%"
+      "text-anchor"   : "middle"
+      "pointer-events": "none"
+    }
+    textElement = new UI.Element "text", attributes
+    textElement.element.textContent = label
+    @appendUIElement textElement
+
 
   # Attaches events to bar UI element
   attachBarEvents: (bar, barData) ->
@@ -124,8 +138,10 @@ class Chart.Bar extends Base
   drawRulerDivisors: ->
     height = @drawable_area_height
     width = @drawable_area_width
-    lines = @ruler.getLinearCoords(height, width, "y", @margins)
-    @drawRuleLine(line) for line in lines
+    @ruler.setLinearCoords height, width, "y", @margins
+    do @drawRuleLabels
+    for coords in @ruler.coords
+      @drawRuleLine coords
 
   drawRuleLine: (coords, isZero=false) ->
     line = new UI.Element "line",
@@ -134,10 +150,20 @@ class Chart.Bar extends Base
       y1    : "#{coords.y1}%"
       y2    : "#{coords.y2}%"
       class : "ruler"
-    console.log line
     @appendUIElement line
 
-
+  drawRuleLabels: ->
+    for value, i in @ruler.divisors
+      attributes = {
+        x: "#{@margins.left - 1}%"
+        y: "#{@ruler.coords[i].y1 + 1}%"
+        "text-anchor"   : "end"
+        "pointer-events": "none"
+        class : "ruler_label"
+      }
+      textElement = new UI.Element "text", attributes
+      textElement.element.textContent = value.toFixed(2)
+      @appendUIElement textElement
 
 
 

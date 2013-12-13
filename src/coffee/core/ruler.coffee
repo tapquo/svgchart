@@ -1,8 +1,6 @@
 class Ruler
 
-  DEFAULT_NUM_DIVISORS = 5
-
-  DEFAULT_MARGINS = {}
+  DEFAULT_NUM_DIVISORS  = 15
 
   constructor: (@options={}) ->
     @num_divisors   = @options.num_divisors or DEFAULT_NUM_DIVISORS
@@ -28,22 +26,16 @@ class Ruler
   # @param mr Margin right
   # @param mb Margin bottom
   # @param ml Margin left
-  getLinearCoords: (height, width, axis="y", margin=null) ->
-    margin = margin or {
-      top     : 0
-      right   : 0
-      bottom  : 0
-      left    : 0
-    }
+  setLinearCoords: (height, width, axis="y", margin=null) ->
+    margin = margin or _getDefaultMargins()
     delta = height / (@divisors.length - 1)
     y = margin.top
     x1 = margin.left
     x2 = width + margin.left
-    posis = []
+    @coords = []
     for value in @divisors.reverse()
-      posis.push {x1:x1, x2:x2, y1:y, y2:y}
+      @coords.push {x1:x1, x2:x2, y1:y, y2:y}
       y += delta
-    posis
 
   # Crates divisors array with values.
   _calcDivisors: ->
@@ -56,3 +48,6 @@ class Ruler
     if @min >= 0 then @zero = 0
     else if @max <= 0 then @zero = 1
     else @zero = Maths.rangeToPercent(0, @min, @max)
+
+  _getDefaultMargins = -> top: 0, right: 0, bottom: 0, left: 0
+
