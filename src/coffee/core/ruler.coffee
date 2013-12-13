@@ -26,14 +26,13 @@ class Ruler
   setLinearCoords: (args...) ->
     @["set#{@axis.toUpperCase()}Coords"].apply @, args
 
-  # Return real coords of all divisors for linear charts
+  # Return real coords of all divisors for linear charts for Y axis
   # @param height The height of the ruler
   # @param width The width of the ruler
   # @param margins Margins object
   setYCoords: (height, width, margin=null) ->
     margin = margin or _getDefaultMargins()
     delta = height / (@divisors.length - 1)
-    console.log delta, @divisors
     y = margin.top
     x1 = margin.left
     x2 = width + margin.left
@@ -42,6 +41,14 @@ class Ruler
       @coords.push {x1:x1, x2:x2, y1:y, y2:y}
       y += delta
 
+    zeroY = @zero * height + margin.top
+    @zero_coords = x1:x1, x2:x2, y1:zeroY, y2:zeroY
+
+
+  # Return real coords of all divisors for linear charts for X axis
+  # @param height The height of the ruler
+  # @param width The width of the ruler
+  # @param margins Margins object
   setXCoords: (height, width, margin=null) ->
     margin = margin or _getDefaultMargins()
     delta = width / (@divisors.length - 1)
@@ -52,27 +59,9 @@ class Ruler
     for value in @divisors
       @coords.push {x1:x, x2:x, y1:y1, y2:y2}
       x += delta
+    zeroX = @zero * width + margin.left
+    @zero_coords = y1:y1, y2:y2, x1:zeroX, x2:zeroX
 
-  setZeroCoords: (height, width, margin=null) ->
-    # margin = margin or _getDefaultMargins()
-    # if @axis is "y"
-    #   delta = height / (@divisors.length - 1)
-    #   y = margin.top
-    #   x1 = margin.left
-    #   x2 = width + margin.left
-    #   @coords = []
-    #   for value in @divisors.reverse()
-    #     @coords.push {x1:x1, x2:x2, y1:y, y2:y}
-    #     y += delta
-    # else
-    #   delta = width / (@divisors.length - 1)
-    #   x = margin.left
-    #   y1 = margin.top
-    #   y2 = height + margin.top
-    #   @coords = []
-    #   for value in @divisors.reverse()
-    #     @coords.push {x1:x, x2:x, y1:y1, y2:y2}
-    #     x += delta
 
   # Crates divisors array with values.
   _calcDivisors: ->
