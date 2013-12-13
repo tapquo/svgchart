@@ -16,8 +16,8 @@ class Base
   addData: (obj) -> @data.push(obj)
 
   removeAllUIElements: ->
-    ui.element.remove() for ui in @ui_elements
-    true
+    ui.remove() for ui in @ui_elements
+    @ui_elements = []
 
   appendUIElement: (ui) ->
     @ui_elements.push ui
