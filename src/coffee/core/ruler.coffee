@@ -1,10 +1,11 @@
 class Ruler
 
-  DEFAULT_NUM_DIVISORS  = 15
+  DEFAULT_NUM_DIVISORS  = 14
 
   constructor: (@options={}) ->
     @num_divisors   = @options.num_divisors or DEFAULT_NUM_DIVISORS
     @divisors       = []
+    @axis           = "y"
     @min            = null
     @max            = null
     @zero_pos       = null
@@ -26,16 +27,29 @@ class Ruler
   # @param mr Margin right
   # @param mb Margin bottom
   # @param ml Margin left
-  setLinearCoords: (height, width, axis="y", margin=null) ->
+  setLinearCoords: (height, width,  margin=null) ->
     margin = margin or _getDefaultMargins()
-    delta = height / (@divisors.length - 1)
-    y = margin.top
-    x1 = margin.left
-    x2 = width + margin.left
-    @coords = []
-    for value in @divisors.reverse()
-      @coords.push {x1:x1, x2:x2, y1:y, y2:y}
-      y += delta
+    if @axis is "y"
+      delta = height / (@divisors.length - 1)
+      y = margin.top
+      x1 = margin.left
+      x2 = width + margin.left
+      @coords = []
+      for value in @divisors.reverse()
+        @coords.push {x1:x1, x2:x2, y1:y, y2:y}
+        y += delta
+    else
+      delta = width / (@divisors.length - 1)
+      x = margin.left
+      y1 = margin.top
+      y2 = height + margin.top
+      @coords = []
+      for value in @divisors.reverse()
+        @coords.push {x1:x, x2:x, y1:y1, y2:y2}
+        x += delta
+
+  # setZeroCoords: () ->
+
 
   # Crates divisors array with values.
   _calcDivisors: ->

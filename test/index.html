@@ -22,33 +22,8 @@
     <script type="text/javascript">
 
         var chart;
-
-        // var MOCK_DATA = [
-        //     { label: "Sports",          value: 0},
-        //     { label: "Economy",         value: 25},
-        //     { label: "Entrtainment",    value: 50},
-        //     { label: "Games",           value: 75},
-        //     { label: "Books",           value: -10},
-        //     { label: "Economy",         value: 25},
-        //     { label: "Entrtainment",    value: 50},
-        //     { label: "Games",           value: 75},
-        //     { label: "Books",           value: 100},
-        // ];
-
-        // var MOCK_DATA = [
-        //     { label: "Sports",   value: -50},
-        //     { label: "20/02/1983",  value: -25},
-        //     { label: "20/02/1985",  value: 25},
-        //     { label: "20/02/1986",  value: 50},
-        //     { label: "20/02/1987",  value: 75}
-        // ];
-
-        // var MOCK_DATA = [
-        //     { label: "20/02/1982",   value: -5},
-        //     { label: "20/02/1983",  value: 10}
-        // ];
-
         var MOCK = [];
+
         MOCK[0] = [
             { label: "20/02/1983",  value: 0},
             { label: "20/02/1983",  value: 25},
@@ -87,7 +62,10 @@
             { label: "20/02/1983",  value: -50},
             { label: "20/02/1983",  value: 0},
             { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: -148},
             { label: "20/02/1983",  value: 100},
+            { label: "20/02/1983",  value: -148},
+            { label: "20/02/1983",  value: 0},
             { label: "20/02/1983",  value: 148},
             { label: "20/02/1983",  value: 150}
         ];
@@ -96,13 +74,12 @@
 
         document.body.onload = function() {
             var container = document.getElementById("bar_chart");
-            chart = new Chart.Bar(container);
+            chart = new Chart.Line(container);
             chart.setTitle("Esto es una prueba de charts");
             chart.setDescription("La description de este chart");
             chart.setTheme("../dist/svgchart.0.0.1.css");
             chart.setData(MOCK[toTest]);
             chart.draw();
-            // console.log(chart);
         };
 
     </script>
