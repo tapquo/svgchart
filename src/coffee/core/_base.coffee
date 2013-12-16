@@ -3,9 +3,18 @@ class Base
   constructor: (@container) ->
     @data = []
     @ui_elements = []
+    @margins = top: 0, right: 0, bottom: 0, left: 0
     do @_createSVG
-    @width = @svg.offsetWidth
-    @height = @svg.offsetHeight
+    @real_width = @svg.offsetWidth
+    @real_height = @svg.offsetHeight
+
+  # Overrides default margins
+  setMargins: (top, right, bottom, left) ->
+    @margins =
+      top     : top or @margins.top
+      right   : right or @margins.right
+      bottom  : bottom or @margins.bottom
+      left    : left or @margins.left
 
   # Sets chart title
   # @param title The title of the chart
@@ -27,6 +36,11 @@ class Base
   removeAllUIElements: ->
     ui.remove() for ui in @ui_elements
     @ui_elements = []
+
+  # Calcs drawable area width and height based on margins
+  calcDrawableArea: ->
+    @drawable_area_width  = @width - @margins.left - @margins.right
+    @drawable_area_height = @height - @margins.top - @margins.bottom
 
   # Appends an UI element to chart container
   # @param ui The UI element

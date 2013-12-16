@@ -69,12 +69,33 @@
             { label: "20/02/1983",  value: 148},
             { label: "20/02/1983",  value: 150}
         ];
+        MOCK[8] = [
+            { label: "20/02/1983",  value: 150},
+            { label: "20/02/1983",  value: 148},
+            { label: "20/02/1983",  value: 100},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 0},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 148},
+            { label: "20/02/1983",  value: 100},
+            { label: "20/02/1983",  value: 148},
+            { label: "20/02/1983",  value: 0},
+            { label: "20/02/1983",  value: 148},
+            { label: "20/02/1983",  value: 150}
+        ];
+        MOCK[9] = [
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 50},
+            { label: "20/02/1983",  value: 50}
+        ];
 
-        var toTest = 7;
+        var toTest = 9;
 
         document.body.onload = function() {
             var container = document.getElementById("bar_chart");
-            chart = new Chart.Line(container);
+            chart = new Chart.Pie(container);
             chart.setTitle("Esto es una prueba de charts");
             chart.setDescription("La description de este chart");
             chart.setTheme("../dist/svgchart.0.0.1.css");

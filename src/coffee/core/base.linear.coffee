@@ -1,6 +1,6 @@
 class Base.Linear extends Base
 
-  # Define drawable area margins
+  # Define bars separation
   BARS_PADDING = 1
 
   # Sets data-svgchart-type to svg and creates ruler
@@ -112,6 +112,4 @@ class Base.Linear extends Base
       textElement = new UI.Element "text", attributes
       textElement.element.textContent = value.toFixed(2)
       @appendUIElement textElement
-
-
 
