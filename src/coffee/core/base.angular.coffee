@@ -1,16 +1,6 @@
 class Base.Angular extends Base
 
-  COLORS = [
-    "rgba(221, 30, 47,.4)",
-    "rgba(6, 162, 203,.4)",
-    "rgba(235, 176, 53,.4)",
-    "rgba(33, 133, 89,.4)",
-    "rgba(208, 198, 177,.4)"
-  ]
-
-
-  # Define drawable area margins
-  BARS_PADDING = 1
+  NUM_COLORS = 5
 
   # Sets data-svgchart-type to svg and creates ruler
   constructor: ->
@@ -52,7 +42,7 @@ class Base.Angular extends Base
     x: @centerX + radius * Math.cos(angle)
     y: @centerY + radius * Math.sin(angle)
 
-  # Creates arc definition
+  # Creates arc definition for the path element
   describeArc: (startAngle, endAngle) ->
     start = @polarToCartesian(endAngle)
     end   = @polarToCartesian(startAngle)
@@ -72,27 +62,28 @@ class Base.Angular extends Base
       factor = parseFloat(value / @total)
       angle = 2 * Math.PI * factor
       endAngle = startAngle + angle
-      color =  COLORS[index % (COLORS.length - 1)]
-      @_drawItemArc startAngle, endAngle, color
-      @_drawItemLabel (startAngle + angle * 0.5), value, factor, color
+      color_index =  index % NUM_COLORS
+      @_drawItemArc startAngle, endAngle, color_index
+      @_drawItemLabel (startAngle + angle * 0.5), "#{label} (#{value})", factor, color_index
       startAngle += angle
 
   # Draws element arc
-  _drawItemArc: (startAngle, endAngle, color) ->
+  _drawItemArc: (startAngle, endAngle, index) ->
     uiel = new UI.Element "path",
-      "stroke"        : "#333"
-      "stroke-width"  : 1
-      "fill"          : color
+      "class"         : "color_#{index}"
       "d"             : @describeArc(startAngle, endAngle)
     @appendUIElement uiel
 
   # Draws element arc label
   _drawItemLabel: (angle, value, factor, color) ->
-    labelPos = @polarToCartesian(angle, @radius + 15)
+    labelPos = @polarToCartesian(angle, @radius - 10)
+    dy = 10 * Math.cos(angle)
+    console.log dy
     labelParams =
       "x"           : labelPos.x
       "y"           : labelPos.y
-      "text-anchor" : if angle > Math.PI then "end" else "start"
+      "dy"          : 10 * Math.cos(angle)
+      "text-anchor" : if angle > Math.PI then "start" else "end"
     uiel = new UI.Element "text", labelParams
     uiel.element.textContent = Math.round(factor * 100) + "%"
     @appendUIElement uiel
