@@ -30,6 +30,7 @@
             { label: "20/02/1983",  value: 75},
             { label: "20/02/1983",  value: 100}
         ]);
+
         MOCK.push([
             { label: "20/02/1983",  value: 150},
             { label: "20/02/1983",  value: 148},
@@ -94,16 +95,18 @@
         var stop = false;
         var container = document.getElementById("bar_chart");
         var currentIndex = 0;
-        var chart = new Chart.Bar(container);
+        var chart = new Chart.Point(container);
 
         var doTest = function() {
             if(!stop) {
-                chart.removeAllUIElements();
+                var startDate = new Date();
+                chart.clear();
                 mockIndex = currentIndex % (MOCK.length - 1)
                 mockIndex = isNaN(mockIndex) ? 0 : mockIndex
                 chart.setData(MOCK[mockIndex]);
-                console.error("Drawing :: ", _getValues(MOCK[mockIndex]));
+                console.debug("Drawing :: ", _getValues(MOCK[mockIndex]).join(", "));
                 chart.draw();
+                console.debug("Time diff :: ", (new Date() - startDate));
                 currentIndex++;
                 setTimeout(doTest, 1500);
             }

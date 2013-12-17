@@ -21,7 +21,9 @@ class UI.Element
       new_classes = classes.filter (cls) -> cls != className
       @attr "class", new_classes.join(" ")
 
-  remove: -> @element.remove()
+  remove: ->
+    if @element.parentNode
+      @element.parentNode.removeChild(@element)
 
   bind: (eventName, callback) ->
     @element.addEventListener(eventName, callback, false)

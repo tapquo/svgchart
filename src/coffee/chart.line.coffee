@@ -9,7 +9,7 @@ class Chart.Line extends Base.Linear
     @setMargins 2, 2, 15, 15
 
   # Sets width of the bar
-  _setItemAnchorSize: () ->
+  _setItemAnchorSize: ->
     @item_anchor_size = @drawable_area_height / @data.length
 
   # Returns real width of a bar

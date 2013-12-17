@@ -33,7 +33,7 @@ class Base
   addData: (obj) -> @data.push(obj)
 
   # Removes all created ui elements of the chart
-  removeAllUIElements: ->
+  clear: ->
     ui.remove() for ui in @ui_elements
     @ui_elements = []
 
@@ -66,3 +66,4 @@ class Base
     @svg.setAttribute "width", "100%"
     @svg.setAttribute "height", "100%"
     @container.appendChild @svg
+

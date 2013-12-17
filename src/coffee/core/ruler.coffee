@@ -1,6 +1,6 @@
 class Ruler
 
-  DEFAULT_NUM_DIVISORS  = 14
+  DEFAULT_NUM_DIVISORS  = 4
 
   constructor: (@options={}) ->
     @num_divisors   = @options.num_divisors or DEFAULT_NUM_DIVISORS
