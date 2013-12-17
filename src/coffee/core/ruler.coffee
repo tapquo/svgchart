@@ -66,6 +66,7 @@ class Ruler
 
   # Crates divisors array with values.
   _calcDivisors: ->
+    @divisors = []
     delta = (@max - @min) / (@num_divisors - 1)
     for i in [0..@num_divisors - 1]
       @divisors.push parseFloat(@min + delta * i)

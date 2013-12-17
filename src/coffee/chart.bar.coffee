@@ -5,10 +5,11 @@ class Chart.Bar extends Base.Linear
   constructor: ->
     super
     @svg.setAttribute "data-svgchart-type", "bar"
+    @ruler.axis = "y"
     @setMargins 2, 2, 15, 15
 
   # Sets width of the bar
-  _setItemAnchorSize: () ->
+  _setItemAnchorSize: ->
     @item_anchor_size = @drawable_area_width / @data.length
 
   # Returns real width of a bar
@@ -18,8 +19,8 @@ class Chart.Bar extends Base.Linear
 
   # Returns height factor of a bar
   calcItemH: (value) ->
-     h = Math.abs(@ruler.zero - Maths.rangeToPercent(value, @ruler.min, @ruler.max))
-     if h is 0 then 0.01 else h
+    h = Math.abs(@ruler.zero - Maths.rangeToPercent(value, @ruler.min, @ruler.max))
+    if h is 0 then 0.01 else h
 
   # Returns real X position of a bar based on index
   calcItemX: (index, value, width) ->
@@ -32,8 +33,10 @@ class Chart.Bar extends Base.Linear
 
   # Attaches events to bar UI element
   attachItemEvents: (bar, barData) ->
-    textX = (parseFloat(bar.attr("x").replace("%", "")) + @bar_anchor_size/2 - BARS_PADDING/2) + "%"
-    textY = (parseFloat(bar.attr("y").replace("%", "")) + 3) + "%"
+    x = parseFloat(bar.attr("x").replace("%", ""))
+    y = parseFloat(bar.attr("y").replace("%", ""))
+    textX = (x + @item_anchor_size / 2 - BARS_PADDING / 2) + "%"
+    textY = (y + 3) + "%"
     textElement = new UI.Element "text", {
       x: textX
       y: textY

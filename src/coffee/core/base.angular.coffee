@@ -78,9 +78,8 @@ class Base.Angular extends Base
   _drawItemLabel: (angle, value, factor, color) ->
     labelPos = @polarToCartesian(angle, @radius - 10)
     dy = 10 * Math.cos(angle)
-    console.log dy
     labelParams =
-      "x"           : labelPos.x
+      "x"           : labelPos.x - 2
       "y"           : labelPos.y
       "dy"          : 10 * Math.cos(angle)
       "text-anchor" : if angle > Math.PI then "start" else "end"

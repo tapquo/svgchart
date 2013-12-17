@@ -21,55 +21,16 @@
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
-        var chart;
         var MOCK = [];
 
-        MOCK[0] = [
+        MOCK.push([
             { label: "20/02/1983",  value: 0},
             { label: "20/02/1983",  value: 25},
             { label: "20/02/1983",  value: 50},
             { label: "20/02/1983",  value: 75},
             { label: "20/02/1983",  value: 100}
-        ];
-        MOCK[1] = [
-            { label: "20/02/1983",  value: -50},
-            { label: "20/02/1983",  value: 50}
-        ];
-        MOCK[2] = [
-            { label: "20/02/1983",  value: -25},
-            { label: "20/02/1983",  value: 75}
-        ];
-        MOCK[3] = [
-            { label: "20/02/1983",  value: -75},
-            { label: "20/02/1983",  value: 25}
-        ];
-        MOCK[4] = [
-            { label: "20/02/1983",  value: -100},
-            { label: "20/02/1983",  value: 0}
-        ];
-        MOCK[5] = [
-            { label: "20/02/1983",  value: -200},
-            { label: "20/02/1983",  value: -100}
-        ];
-        MOCK[6] = [
-            { label: "20/02/1983",  value: 150},
-            { label: "20/02/1983",  value: 200}
-        ];
-        MOCK[7] = [
-            { label: "20/02/1983",  value: -150},
-            { label: "20/02/1983",  value: -148},
-            { label: "20/02/1983",  value: -100},
-            { label: "20/02/1983",  value: -50},
-            { label: "20/02/1983",  value: 0},
-            { label: "20/02/1983",  value: 50},
-            { label: "20/02/1983",  value: -148},
-            { label: "20/02/1983",  value: 100},
-            { label: "20/02/1983",  value: -148},
-            { label: "20/02/1983",  value: 0},
-            { label: "20/02/1983",  value: 148},
-            { label: "20/02/1983",  value: 150}
-        ];
-        MOCK[8] = [
+        ]);
+        MOCK.push([
             { label: "20/02/1983",  value: 150},
             { label: "20/02/1983",  value: 148},
             { label: "20/02/1983",  value: 100},
@@ -82,44 +43,85 @@
             { label: "20/02/1983",  value: 0},
             { label: "20/02/1983",  value: 148},
             { label: "20/02/1983",  value: 150}
-        ];
-        MOCK[9] = [
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: 10},
+            { label: "20/02/1983",  value: 12},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
-
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
-
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-
-            { label: "20/02/1983",  value: 10},
+            { label: "20/02/1983",  value: 90},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10},
             { label: "20/02/1983",  value: 10}
-        ];
+        ]);
 
-        var toTest = 5;
 
-        document.body.onload = function() {
-            var container = document.getElementById("bar_chart");
-            chart = new Chart.Bar(container);
-            // chart = new Chart.Line(container);
-            // chart = new Chart.Pie(container);
-            chart.setTitle("Esto es una prueba de charts");
-            chart.setDescription("La description de este chart");
-            chart.setTheme("../dist/svgchart.0.0.1.css");
-            chart.setData(MOCK[toTest]);
-            chart.draw();
+        // With negative values too
+        MOCK.push([
+            { label: "20/02/1983",  value: -50},
+            { label: "20/02/1983",  value: 50}
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: -25},
+            { label: "20/02/1983",  value: 75}
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: -75},
+            { label: "20/02/1983",  value: 25}
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: -100},
+            { label: "20/02/1983",  value: 0}
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: -200},
+            { label: "20/02/1983",  value: -100}
+        ]);
+        MOCK.push([
+            { label: "20/02/1983",  value: 150},
+            { label: "20/02/1983",  value: 200}
+        ]);
+
+
+        var stop = false;
+        var container = document.getElementById("bar_chart");
+        var currentIndex = 0;
+        var chart = new Chart.Bar(container);
+
+        var doTest = function() {
+            if(!stop) {
+                chart.removeAllUIElements();
+                mockIndex = currentIndex % (MOCK.length - 1)
+                mockIndex = isNaN(mockIndex) ? 0 : mockIndex
+                chart.setData(MOCK[mockIndex]);
+                console.error("Drawing :: ", _getValues(MOCK[mockIndex]));
+                chart.draw();
+                currentIndex++;
+                setTimeout(doTest, 1500);
+            }
         };
 
+        var _getValues = function(data) {
+            var values = [];
+            for(var i = 0, n = data.length; i < n; i++) {
+                values.push(data[i].value);
+            }
+            return values;
+        };
 
+        document.body.addEventListener("keydown", function(e) {
+            if(e.keyCode === 27) stop = true;
+        });
+
+        doTest();
 
     </script>
 </body>

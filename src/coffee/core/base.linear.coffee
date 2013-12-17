@@ -68,18 +68,50 @@ class Base.Linear extends Base
     @attachItemEvents(uiel, barData)
     @appendUIElement uiel
 
-  # Appends bar bottom label
+  # # Appends bar bottom label
   appendBarLabel: (label, index) ->
-    x = @calcItemX(index) * @drawable_area_width + @margins.left + @item_anchor_size*0.5
+    if @ruler.axis is "y"
+      x = (@calcItemX(index) * @drawable_area_width + @margins.left + @item_anchor_size * 0.5) + "%"
+      y = (@height - (@margins.bottom / 2)) + "%"
+      text_anchor = "middle"
+    else
+      x = (@margins.left - 2) + "%"
+      y = (@item_anchor_size * index) + @margins.top + @item_anchor_size / 2 + "%"
+      text_anchor = "end"
+
     attributes = {
-      x: "#{x}%"
-      y: (@height - (@margins.bottom / 2)) + "%"
-      "text-anchor"   : "middle"
+      x               : x
+      y               : y
+      "text-anchor"   : text_anchor
       "pointer-events": "none"
     }
     textElement = new UI.Element "text", attributes
     textElement.element.textContent = label
     @appendUIElement textElement
+
+
+  # Draws ruler labels
+  drawRuleLabels: ->
+    for value, i in @ruler.divisors
+      attributes =
+        "pointer-events"  : "none"
+        "class"           : "ruler_label"
+
+      if @ruler.axis is "y"
+        attributes.x = "#{@margins.left - 1}%"
+        attributes.y = "#{@ruler.coords[i].y1 + 1}%"
+        attributes['text-anchor'] = "end"
+      else
+        attributes.x = "#{@ruler.coords[i].x1}%"
+        attributes.y = "#{@margins.top + @drawable_area_height + 2}%"
+        attributes['text-anchor'] = "middle"
+
+      textElement = new UI.Element "text", attributes
+      textElement.element.textContent = value.toFixed(2)
+      @appendUIElement textElement
+
+
+
 
   # Ruler draw functions
   drawRulerDivisors: ->
@@ -99,17 +131,3 @@ class Base.Linear extends Base
       y2    : "#{coords.y2}%"
       class : "ruler#{zeroClass}"
     @appendUIElement line
-
-  drawRuleLabels: ->
-    for value, i in @ruler.divisors
-      attributes = {
-        x: "#{@margins.left - 1}%"
-        y: "#{@ruler.coords[i].y1 + 1}%"
-        "text-anchor"   : "end"
-        "pointer-events": "none"
-        class : "ruler_label"
-      }
-      textElement = new UI.Element "text", attributes
-      textElement.element.textContent = value.toFixed(2)
-      @appendUIElement textElement
-
