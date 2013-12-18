@@ -92,17 +92,11 @@
         ]);
 
 
-        MOCK.push(
-          ['views', 'likes'],
-          ['10', '20'],
-          ['20', '30']
-        )
-
 
         var stop = false;
         var container = document.getElementById("bar_chart");
         var currentIndex = 0;
-        var chart = new Chart.Bar(container);
+        var chart = new Chart.Point(container);
 
         var doTest = function() {
             if(!stop) {

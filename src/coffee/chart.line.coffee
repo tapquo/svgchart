@@ -20,7 +20,14 @@ class Chart.Line extends Base.Linear
 
   # Returns height factor of a bar
   calcItemH: (value) ->
-    h = (@item_anchor_size - BARS_PADDING) / @drawable_area_height
+    if @is_data_table
+      anchor_size = @item_anchor_size / @data[0].length
+      padding = BARS_PADDING / @data[0].length
+    else
+      anchor_size = @item_anchor_size
+      padding = BARS_PADDING
+
+    h = (anchor_size - padding) / @drawable_area_height
     if h is 0 then 0.01 else h
 
   # Returns real X position of a bar based on index
@@ -28,8 +35,9 @@ class Chart.Line extends Base.Linear
     if value < 0 then @ruler.zero - width else @ruler.zero
 
   # Returns position y factor of a bar
-  calcItemY: (index, value, height) ->
-    ((@item_anchor_size * index) + (BARS_PADDING * 0.5)) / @drawable_area_height
+  calcItemY: (index, value, height, index2) ->
+    deltaY = if @is_data_table then (@item_anchor_size - BARS_PADDING) / @data[0].length * index2 else 0
+    ((@item_anchor_size * index) + (deltaY)) / @drawable_area_height
 
   # Attaches events to bar UI element
   attachItemEvents: (bar, barData) ->
