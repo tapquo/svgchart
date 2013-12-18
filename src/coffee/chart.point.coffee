@@ -15,13 +15,13 @@ class Chart.Point extends Base.Linear
       cx  : "#{cx}%"
       cy  : "#{cy}%"
       r   : 4
+    el = new UI.Element("circle", attributes)
+    @appendUIElement el
 
     @points.push
       x: cx * @real_width / 100
       y: cy * @real_height / 100
 
-    el = new UI.Element("circle", attributes)
-    @appendUIElement el
     if index is @data.length - 1
       zero_y = ((1 - @ruler.zero) * @drawable_area_height + @margins.top) * @real_height / 100
       start_zero_x = @margins.left * @real_width / 100

@@ -11,14 +11,6 @@ class Base.Linear extends Base
     @width = 100
     @height = 100
 
-  # Overrides default margins
-  setMargins: (top, right, bottom, left) ->
-    @margins =
-      top     : top or @margins.top
-      right   : right or @margins.right
-      bottom  : bottom or @margins.bottom
-      left    : left or @margins.left
-
   # Draws all the chart
   draw: ->
     do @calcDrawableArea
@@ -26,8 +18,9 @@ class Base.Linear extends Base
     do @_setItemAnchorSize
     @ruler.setLimits @min_value, @max_value
     do @drawDrawableContainer
-    @drawItem(itemData, index) for itemData, index in @data
     do @drawRulerDivisors
+    for itemData, index in @data.slice(if @is_data_table then "1" else "0")
+      @drawItem(itemData, index)
 
   # Calcs drawable area width and height based on margins
   calcDrawableArea: ->
@@ -47,19 +40,38 @@ class Base.Linear extends Base
 
   # Draws a bar
   drawItem: (data, index) ->
-    value = data.value
-    factor_h = @calcItemH value
-    factor_y = @calcItemY index, value, factor_h
-    factor_w = @calcItemW value
-    factor_x = @calcItemX index, value, factor_w
-    attributes =
-      x       : "#{@drawable_area_width * factor_x + @margins.left}%"
-      y       : "#{@drawable_area_height * factor_y + @margins.top}%"
-      width   : "#{@drawable_area_width * factor_w}%"
-      height  : "#{@drawable_area_height * factor_h}%"
+    if @is_data_table
+      console.log data
+      for value, index2 in data
+        factor_h = @calcItemH value
+        factor_y = @calcItemY index, value, factor_h, index2
+        factor_w = @calcItemW value
+        factor_x = @calcItemX index, value, factor_w, index2
+        attributes =
+          x       : "#{@drawable_area_width * factor_x + @margins.left}%"
+          y       : "#{@drawable_area_height * factor_y + @margins.top}%"
+          width   : "#{@drawable_area_width * factor_w}%"
+          height  : "#{@drawable_area_height * factor_h}%"
 
-    @appendBar attributes, data
-    @appendBarLabel(data.label, index)
+        console.debug attributes
+
+        @appendBar attributes, data
+        # @appendBarLabel(data.label, index)
+
+    else
+      value = data.value
+      factor_h = @calcItemH value
+      factor_y = @calcItemY index, value, factor_h
+      factor_w = @calcItemW value
+      factor_x = @calcItemX index, value, factor_w
+      attributes =
+        x       : "#{@drawable_area_width * factor_x + @margins.left}%"
+        y       : "#{@drawable_area_height * factor_y + @margins.top}%"
+        width   : "#{@drawable_area_width * factor_w}%"
+        height  : "#{@drawable_area_height * factor_h}%"
+
+      @appendBar attributes, data
+      @appendBarLabel(data.label, index)
 
   # Creates bar UI element and appends it to container
   appendBar: (attributes, barData) ->
@@ -109,8 +121,6 @@ class Base.Linear extends Base
       textElement = new UI.Element "text", attributes
       textElement.element.textContent = value.toFixed(2)
       @appendUIElement textElement
-
-
 
 
   # Ruler draw functions

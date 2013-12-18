@@ -8,7 +8,7 @@ class Base
     @real_width = @svg.offsetWidth
     @real_height = @svg.offsetHeight
 
-  # Overrides default margins
+  # Sets drawable area margins in percent
   setMargins: (top, right, bottom, left) ->
     @margins =
       top     : top or @margins.top
@@ -26,7 +26,15 @@ class Base
 
   # Sets chart data labels and values
   # @param data The data array of objects {label: '', value: 0}
-  setData: (@data) -> @
+  # example: [{label: '2012', value: 10}, {2013: '', value: 15}]
+  setData: (@data) ->
+    @is_data_table = false
+
+  # Sets chart data labels and values
+  # @param data The data array of arrays
+  # example: ['likes', 'views'], ['10', '20'], ['20', '30']
+  setDataTable: (@data) ->
+    @is_data_table = true
 
   # Adds a value to the chart data
   # @param data Data object
@@ -48,9 +56,14 @@ class Base
     @ui_elements.push ui
     @svg.appendChild ui.element
 
-  # Sets @max_value based on @data values
+  # Sets @max_value and @min_value based on @data
   _setMaxMin: () ->
-    vals = (item.value for item in @data)
+    vals = []
+    if @is_data_table
+      for item in @data.slice(1)
+        vals.push parseFloat(value) for value in item
+
+    else vals.push(item.value) for item in @data
     @max_value = Maths.max(vals)
     @min_value = Maths.min(vals)
 

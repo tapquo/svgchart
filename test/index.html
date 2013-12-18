@@ -92,10 +92,17 @@
         ]);
 
 
+        MOCK.push(
+          ['views', 'likes'],
+          ['10', '20'],
+          ['20', '30']
+        )
+
+
         var stop = false;
         var container = document.getElementById("bar_chart");
         var currentIndex = 0;
-        var chart = new Chart.Point(container);
+        var chart = new Chart.Bar(container);
 
         var doTest = function() {
             if(!stop) {
@@ -104,12 +111,11 @@
                 mockIndex = currentIndex % (MOCK.length - 1)
                 mockIndex = isNaN(mockIndex) ? 0 : mockIndex
                 chart.setData(MOCK[mockIndex]);
-                console.debug("Drawing :: ", _getValues(MOCK[mockIndex]).join(", "));
+                console.debug("["+mockIndex+"] :: ", _getValues(MOCK[mockIndex]).join(", "));
                 chart.draw();
-                console.debug("Time diff :: ", (new Date() - startDate));
                 currentIndex++;
-                setTimeout(doTest, 1500);
             }
+            setTimeout(doTest, 1000);
         };
 
         var _getValues = function(data) {
@@ -120,9 +126,7 @@
             return values;
         };
 
-        document.body.addEventListener("keydown", function(e) {
-            if(e.keyCode === 27) stop = true;
-        });
+        document.body.addEventListener("click", function() { stop = !stop; });
 
         doTest();
 

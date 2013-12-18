@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG Charts tests</title>
+    <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
+    <style type="text/css">
+        .chart {
+            background-color: #eee;
+            border: 1px solid #ddd;
+            margin: 0 auto;
+            width: 90%;
+            height: 600px;
+        }
+</style>
+</head>
+<body>
+
+    <div id="bar_chart" class="chart"></div>
+
+    <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
+    <script type="text/javascript">
+
+        var MOCK = [
+          ['views', 'likes', 'shares'],
+          [10, 12, 14],
+          [20, 22, 24],
+          [10, 12, 14],
+          [20, 22, 24],
+          [10, 12, 14],
+          [20, 22, 24],
+          [30, 32, 34]
+        ];
+
+        var container = document.getElementById("bar_chart");
+        var chart = new Chart.Bar(container);
+        chart.setDataTable(MOCK);
+        chart.draw();
+
+    </script>
+</body>
+</html>
