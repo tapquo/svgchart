@@ -1,0 +1,40 @@
+TOOLTIP_BCK   = #111
+TOOLTIP_COLOR = #eee
+TRANSITION    = opacity 500ms ease
+
+[data-svgchart-tooltip]
+  -webkit-transition: TRANSITION
+  -webkit-border-radius: 5px
+  pointer-events: none
+  background-color: TOOLTIP_BCK
+  color: #eee
+  position: absolute
+  padding: 10px
+  max-width: 200px
+  height: auto
+  opacity: 0
+
+
+  &:before
+    -webkit-transition: TRANSITION
+    content       : ""
+    position      : absolute
+    opacity       : 0
+    width         : 0
+    height        : 0
+    margin-top    : -6px
+    margin-right  : 0px
+    margin-bottom : 0px
+    margin-left   : -38px
+    border-top    : 15px solid transparent
+    border-right  : 20px solid TOOLTIP_BCK
+    border-bottom : 15px solid transparent
+    border-left   : 15px solid transparent
+
+  & h1
+    margin: 0
+
+  &.show
+    opacity: 0.8
+    &:before
+      opacity: 0.8

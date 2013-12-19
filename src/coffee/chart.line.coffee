@@ -1,17 +1,17 @@
 class Chart.Line extends Base.Linear
 
-  BARS_PADDING = 1
+  BARS_PADDING = 0
 
   constructor: ->
     super
     @svg.setAttribute "data-svgchart-type", "line"
     @ruler.axis = "x"
-    @setMargins 2, 2, 15, 15
+    @setMargins 2, 2, 3, 15
 
   # Sets width of the bar
   _setItemAnchorSize: ->
     diff = if @is_data_table then 1 else 0
-    @item_anchor_size = @drawable_area_height / (@data.length - diff)
+    @item_anchor_size = @drawable_height / (@data.length - diff)
 
   # Returns real width of a bar
   calcItemW: (value) ->
@@ -27,7 +27,7 @@ class Chart.Line extends Base.Linear
       anchor_size = @item_anchor_size
       padding = BARS_PADDING
 
-    h = (anchor_size - padding) / @drawable_area_height
+    h = (anchor_size - padding) / @drawable_height
     if h is 0 then 0.01 else h
 
   # Returns real X position of a bar based on index
@@ -37,29 +37,5 @@ class Chart.Line extends Base.Linear
   # Returns position y factor of a bar
   calcItemY: (index, value, height, index2) ->
     deltaY = if @is_data_table then (@item_anchor_size - BARS_PADDING) / @data[0].length * index2 else 0
-    ((@item_anchor_size * index) + (deltaY)) / @drawable_area_height
+    ((@item_anchor_size * index) + (deltaY) + (BARS_PADDING * 0.5)) / @drawable_height
 
-  # Attaches events to bar UI element
-  attachItemEvents: (bar, barData) ->
-    x = parseFloat(bar.attr("x").replace("%", ""))
-    y = parseFloat(bar.attr("y").replace("%", ""))
-    textX = (x + @item_anchor_size / 2 - BARS_PADDING / 2) + "%"
-    textY = (y + 3) + "%"
-    textElement = new UI.Element "text", {
-      x: textX
-      y: textY
-      "text-anchor"   : "middle"
-      "pointer-events": "none"
-    }
-    textElement.element.textContent = barData.value
-
-    bar.bind "click", (e) ->
-      alert "label: #{barData.label}, value: #{barData.value}"
-
-    bar.bind "mouseover", (e) =>
-      bar.addClass "over"
-      @appendUIElement textElement
-
-    bar.bind "mouseout", (e) ->
-      bar.removeClass "over"
-      textElement.remove()

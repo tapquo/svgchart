@@ -16,8 +16,8 @@ module.exports = (grunt) ->
 
     source:
       coffee: [
-        "src/coffee/core/*.coffee"
         "src/coffee/helpers/*.coffee"
+        "src/coffee/core/*.coffee"
         "src/coffee/ui/ui.coffee"
         "src/coffee/ui/ui.element.coffee"
         "src/coffee/ui/ui.element.*.coffee"
@@ -27,6 +27,7 @@ module.exports = (grunt) ->
       styles: [
         "src/stylesheets/chart.styl"
         "src/stylesheets/chart.*.styl"
+        "src/stylesheets/tooltip.styl"
       ]
 
     coffee:

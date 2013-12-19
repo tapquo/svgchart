@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>SVG Charts tests</title>
     <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
+    <!-- <link rel="stylesheet" href="../dist/svgchart.0.0.1.tooltip.css"> -->
     <style type="text/css">
+
         .chart {
             background-color: #eee;
             border: 1px solid #ddd;
@@ -24,71 +26,71 @@
         var MOCK = [];
 
         MOCK.push([
-            { label: "20/02/1983",  value: 0},
-            { label: "20/02/1983",  value: 25},
-            { label: "20/02/1983",  value: 50},
-            { label: "20/02/1983",  value: 75},
-            { label: "20/02/1983",  value: 100}
+            { label: "el 0",  value: 0},
+            { label: "el 25",  value: 25},
+            { label: "el 50 pero vamos a poner algo mas largo para verlo en el tooltip",  value: 50},
+            { label: "el 75",  value: 75},
+            { label: "el 100 pero vamos a poner algo mas largo para verlo en el tooltip",  value: 100}
         ]);
 
         MOCK.push([
-            { label: "20/02/1983",  value: 150},
-            { label: "20/02/1983",  value: 148},
-            { label: "20/02/1983",  value: 100},
-            { label: "20/02/1983",  value: 50},
-            { label: "20/02/1983",  value: 0},
-            { label: "20/02/1983",  value: 50},
-            { label: "20/02/1983",  value: 148},
-            { label: "20/02/1983",  value: 100},
-            { label: "20/02/1983",  value: 148},
-            { label: "20/02/1983",  value: 0},
-            { label: "20/02/1983",  value: 148},
-            { label: "20/02/1983",  value: 150}
+            { label: "el 150",  value: 150},
+            { label: "el 148",  value: 148},
+            { label: "el 100",  value: 100},
+            { label: "el 50",   value: 50},
+            { label: "el 0",    value: 0},
+            { label: "el 50",   value: 50},
+            { label: "el 148",  value: 148},
+            { label: "el 100",  value: 100},
+            { label: "el 148",  value: 148},
+            { label: "el 0",    value: 0},
+            { label: "el 148",  value: 148},
+            { label: "el 150",  value: 150}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 12},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 90},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10},
-            { label: "20/02/1983",  value: 10}
+            { label: "el 10",  value: 10},
+            { label: "el 12",  value: 12},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 90",  value: 90},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10},
+            { label: "el 10",  value: 10}
         ]);
 
 
         // With negative values too
         MOCK.push([
-            { label: "20/02/1983",  value: -50},
-            { label: "20/02/1983",  value: 50}
+            { label: "el -50",  value: -50},
+            { label: "el  50",  value:  50}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: -25},
-            { label: "20/02/1983",  value: 75}
+            { label: "el -25",  value: -25},
+            { label: "el  75",  value:  75}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: -75},
-            { label: "20/02/1983",  value: 25}
+            { label: "el -75",  value: -75},
+            { label: "el  25",  value:  25}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: -100},
-            { label: "20/02/1983",  value: 0}
+            { label: "el -100",  value: -100},
+            { label: "el  0",  value: 0}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: -200},
-            { label: "20/02/1983",  value: -100}
+            { label: "el -200",  value: -200},
+            { label: "el -100",  value: -100}
         ]);
         MOCK.push([
-            { label: "20/02/1983",  value: 150},
-            { label: "20/02/1983",  value: 200}
+            { label: "el  150",  value: 150},
+            { label: "el  200",  value: 200}
         ]);
 
 
@@ -96,7 +98,7 @@
         var stop = false;
         var container = document.getElementById("bar_chart");
         var currentIndex = 0;
-        var chart = new Chart.Point(container);
+        var chart = new Chart.Line(container);
 
         var doTest = function() {
             if(!stop) {
@@ -105,7 +107,7 @@
                 mockIndex = currentIndex % (MOCK.length - 1)
                 mockIndex = isNaN(mockIndex) ? 0 : mockIndex
                 chart.setData(MOCK[mockIndex]);
-                console.debug("["+mockIndex+"] :: ", _getValues(MOCK[mockIndex]).join(", "));
+                // console.debug("["+mockIndex+"] :: ", _getValues(MOCK[mockIndex]).join(", "));
                 chart.draw();
                 currentIndex++;
             }

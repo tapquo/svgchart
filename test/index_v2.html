@@ -21,21 +21,24 @@
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
-        var MOCK = [
-          ['views', 'likes', 'shares'],
-          [10, 12, 14],
-          [20, 22, 24],
-          [10, 12, 14],
-          [20, 22, 24],
-          [10, 12, 14],
-          [20, 22, 24],
-          [30, 32, 3]
+        var MOCK = [];
+
+        MOCK.push [
+            {
+                labels: ["day 1", "day 2", "day 3", "day 4", "day 5"],
+                values: [0,25,50,75,100]
+            },
+            {
+                labels: ["day 1", "day 2", "day 3", "day 4", "day 5"],
+                values: [0,25,50,75,100]
+            }
         ];
 
         var container = document.getElementById("bar_chart");
         var chart = new Chart.Bar(container);
-        chart.setDataTable(MOCK);
+        chart.setData(MOCK[0]);
         chart.draw();
+
 
     </script>
 </body>

@@ -10,25 +10,25 @@ class Base.Angular extends Base
 
   # Draws all the chart
   draw: ->
-    do @calcDrawableArea
+    do @_calcDrawableArea
     do @_setMaxMin
     do @_setTotal
     do @drawItems
 
   # Calcs drawable area width and height based on margins,
   # pie center coordinates, and pie radius
-  calcDrawableArea: ->
+  _calcDrawableArea: ->
     @real_margins =
       top     : @real_width * @margins.top / 100
       right   : @real_width * @margins.right / 100
       bottom  : @real_width * @margins.bottom / 100
       left    : @real_width * @margins.left / 100
 
-    @drawable_area_width  = @real_width - @real_margins.left - @real_margins.right
-    @drawable_area_height = @real_height - @real_margins.top - @real_margins.bottom
-    @centerX = (@drawable_area_width / 2) + @real_margins.left
-    @centerY = (@drawable_area_height / 2) + @real_margins.top
-    @radius = Maths.min([@drawable_area_width, @drawable_area_height]) / 2
+    @drawable_width  = @real_width - @real_margins.left - @real_margins.right
+    @drawable_height = @real_height - @real_margins.top - @real_margins.bottom
+    @centerX = (@drawable_width / 2) + @real_margins.left
+    @centerY = (@drawable_height / 2) + @real_margins.top
+    @radius = Maths.min([@drawable_width, @drawable_height]) / 2
 
   # Sets total of all data values
   _setTotal: ->
@@ -63,16 +63,17 @@ class Base.Angular extends Base
       angle = 2 * Math.PI * factor
       endAngle = startAngle + angle
       color_index =  index % NUM_COLORS
-      @_drawItemArc startAngle, endAngle, color_index
+      @_drawItemArc startAngle, endAngle, color_index, data
       @_drawItemLabel (startAngle + angle * 0.5), "#{label} (#{value})", factor, color_index
       startAngle += angle
 
   # Draws element arc
-  _drawItemArc: (startAngle, endAngle, index) ->
+  _drawItemArc: (startAngle, endAngle, index, data) ->
     uiel = new UI.Element "path",
       "class"         : "color_#{index}"
       "d"             : @describeArc(startAngle, endAngle)
-    @appendUIElement uiel
+    @attachItemEvents uiel, data
+    @_appendUIElement uiel
 
   # Draws element arc label
   _drawItemLabel: (angle, value, factor, color) ->
@@ -85,5 +86,20 @@ class Base.Angular extends Base
       "text-anchor" : if angle > Math.PI then "start" else "end"
     uiel = new UI.Element "text", labelParams
     uiel.element.textContent = Math.round(factor * 100) + "%"
-    @appendUIElement uiel
+    @_appendUIElement uiel
 
+
+  attachItemEvents: (bar, barData) ->
+    bar.bind "mouseover", ->
+      bar.addClass "over"
+      Tooltip.html _tooltipHTML(barData)
+      Tooltip.show()
+    bar.bind "mouseleave", ->
+      bar.removeClass "over"
+      Tooltip.hide()
+
+  _tooltipHTML = (data) ->
+    """
+    Label: #{data.label} <br/>
+    Value: <strong>#{data.value}</strong>
+    """

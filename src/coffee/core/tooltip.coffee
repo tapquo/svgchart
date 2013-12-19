@@ -1,25 +1,36 @@
-do ->
+Tooltip = do ->
 
+  _container  = null
+  _el         = null
+  _svg        = null
+  _svgPoint   = null
 
-  # document.querySelector("[data-tooltip]").addEventListener "mouseover", (e) ->
-  #   console.log "Overrrrrrr"
+  init = (container, svg) ->
+    _container = container
+    _svg = svg
+    _el = document.createElement "div"
+    _el.setAttribute "data-svgchart-tooltip", "true"
+    _container.appendChild _el
+    _svgPoint = _svg.createSVGPoint()
 
-  # constructor: (@svg, @item, @label="", @value=null) ->
-  #   @point = @svg.createSVGPoint()
-  #   @item.element.addEventListener "mousemove", @_mouseOver
-  #   @item.element.addEventListener "mouseleave", @_mouseLeave
-  #   @uiel = new UI.Element("text", {x: -50, y: -50})
-  #   @uiel.element.textContent = @label
-  #   @svg.appendChild @uiel.element
+  text = (text) -> _el.innerText = text
 
-  # cursorPoint: (evt) ->
-  #   @point.x = evt.clientX
-  #   @point.y = evt.clientY
-  #   @point.matrixTransform @svg.getScreenCTM()
+  html = (html) -> _el.innerHTML = html
 
-  # _mouseOver: (evt) =>
-  #   pos = @cursorPoint(evt)
-  #   @uiel.attr "x", pos.x
-  #   @uiel.attr "y", pos.y
-  #   console.log pos.x, pos.y, @label, @value
+  show = ->
+    _el.classList.add "show"
+    _container.addEventListener "mousemove", _onMove
 
+  hide = ->
+    _el.classList.remove "show"
+    _container.removeEventListener "mousemove", _onMove
+
+  _onMove = (e) ->
+    _el.style.top = "#{e.y - 20}px"
+    _el.style.left = "#{e.x + 20}px"
+
+  init: init
+  text: text
+  html: html
+  show: show
+  hide: hide

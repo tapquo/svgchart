@@ -1,14 +1,21 @@
 class Base
 
-  constructor: (@container) ->
+  # Class constructor
+  # Intializes common vars and appends svg element to container
+  constructor: (@container, options = {}) ->
     @data = []
     @ui_elements = []
     @margins = top: 0, right: 0, bottom: 0, left: 0
+    @real_width = @container.offsetWidth
+    @real_height = @container.offsetHeight
     do @_createSVG
-    @real_width = @svg.offsetWidth
-    @real_height = @svg.offsetHeight
+    Tooltip.init @container, @svg
 
   # Sets drawable area margins in percent
+  # @param top Top margin
+  # @param right Right margin
+  # @param bottom Bottom margin
+  # @param left Left margin
   setMargins: (top, right, bottom, left) ->
     @margins =
       top     : top or @margins.top
@@ -36,27 +43,27 @@ class Base
   setDataTable: (@data) ->
     @is_data_table = true
 
-  # Adds a value to the chart data
-  # @param data Data object
-  addData: (obj) -> @data.push(obj)
-
   # Removes all created ui elements of the chart
   clear: ->
     ui.remove() for ui in @ui_elements
     @ui_elements = []
 
+  draw: ->
+    do @_calcDrawableArea
+    do @_setMaxMin
+
   # Calcs drawable area width and height based on margins
-  calcDrawableArea: ->
-    @drawable_area_width  = @width - @margins.left - @margins.right
-    @drawable_area_height = @height - @margins.top - @margins.bottom
+  _calcDrawableArea: ->
+    @drawable_width  = @width - @margins.left - @margins.right
+    @drawable_height = @height - @margins.top - @margins.bottom
 
   # Appends an UI element to chart container
   # @param ui The UI element
-  appendUIElement: (ui) ->
+  _appendUIElement: (ui) ->
     @ui_elements.push ui
     @svg.appendChild ui.element
 
-  # Sets @max_value and @min_value based on @data
+  # Sets @max and @min based on @data
   _setMaxMin: () ->
     vals = []
     if @is_data_table
@@ -64,14 +71,8 @@ class Base
         vals.push parseFloat(value) for value in item
 
     else vals.push(item.value) for item in @data
-    @max_value = Maths.max(vals)
-    @min_value = Maths.min(vals)
-
-  # Sets a css url as theme and appends it to svg container
-  setTheme: (@themeUrl) ->
-    style = document.createElementNS "http://www.w3.org/2000/svg", "style"
-    style.textContent = "@import url(#{@themeUrl})"
-    @svg.appendChild style
+    @max = Maths.max(vals)
+    @min = Maths.min(vals)
 
   # Creates a svg element to append on it all UI or style elements
   _createSVG: ->

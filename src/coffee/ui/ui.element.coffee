@@ -26,4 +26,4 @@ class UI.Element
       @element.parentNode.removeChild(@element)
 
   bind: (eventName, callback) ->
-    @element.addEventListener(eventName, callback, false)
+    @element.addEventListener(eventName, callback, true)

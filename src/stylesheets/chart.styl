@@ -1,9 +1,15 @@
-.ruler
-  pointer-events: none
-  stroke: rgba(0,0,0, 0.3)
-  stroke-width: 0.2
-  fill: transparent
+[data-svgchart-type]
 
-  &.zero
-    stroke-width: 4
-    stroke: rgba(0,0,0, 0.7)
+  & .ruler
+    pointer-events: none
+    stroke: rgba(0,0,0, 0.3)
+    stroke-width: 0.2
+    fill: transparent
+
+    &.zero
+      stroke-width: 4
+      stroke: rgba(0,0,0, 0.7)
+
+  & text.zero
+    stroke: red
+    fill: red
