@@ -8,6 +8,7 @@ class Base
     @margins = top: 0, right: 0, bottom: 0, left: 0
     @real_width = @container.offsetWidth
     @real_height = @container.offsetHeight
+    do @_calcDrawableArea
     do @_createSVG
     Tooltip.init @container, @svg
 
@@ -22,6 +23,7 @@ class Base
       right   : right or @margins.right
       bottom  : bottom or @margins.bottom
       left    : left or @margins.left
+    do @_calcDrawableArea
 
   # Sets chart title
   # @param title The title of the chart
@@ -35,13 +37,8 @@ class Base
   # @param data The data array of objects {label: '', value: 0}
   # example: [{label: '2012', value: 10}, {2013: '', value: 15}]
   setData: (@data) ->
-    @is_data_table = false
-
-  # Sets chart data labels and values
-  # @param data The data array of arrays
-  # example: ['likes', 'views'], ['10', '20'], ['20', '30']
-  setDataTable: (@data) ->
-    @is_data_table = true
+    do @_setMaxMin
+    @num_datasets = @data.dataset.length
 
   # Removes all created ui elements of the chart
   clear: ->
@@ -50,7 +47,6 @@ class Base
 
   draw: ->
     do @_calcDrawableArea
-    do @_setMaxMin
 
   # Calcs drawable area width and height based on margins
   _calcDrawableArea: ->
@@ -66,13 +62,13 @@ class Base
   # Sets @max and @min based on @data
   _setMaxMin: () ->
     vals = []
-    if @is_data_table
-      for item in @data.slice(1)
-        vals.push parseFloat(value) for value in item
-
-    else vals.push(item.value) for item in @data
+    vals = vals.concat(dataset.values) for dataset in @data.dataset
     @max = Maths.max(vals)
     @min = Maths.min(vals)
+
+  # Checks if data is valid
+  _validData: ->
+    true
 
   # Creates a svg element to append on it all UI or style elements
   _createSVG: ->

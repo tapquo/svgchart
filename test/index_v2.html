@@ -5,6 +5,7 @@
     <title>SVG Charts tests</title>
     <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
     <style type="text/css">
+
         .chart {
             background-color: #eee;
             border: 1px solid #ddd;
@@ -12,6 +13,7 @@
             width: 90%;
             height: 600px;
         }
+
 </style>
 </head>
 <body>
@@ -21,25 +23,62 @@
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
-        var MOCK = [];
+        // var MOCK = [
+        //     {
+        //         name    : "W1",
+        //         labels  : ["mon", "tue", "wed"],
+        //         values  : [5, 3, 5]
+        //     },
+        //     {
+        //         name    : "W2",
+        //         labels  : ["mon", "tue", "wed"],
+        //         values  : [5, 15, 25]
+        //     },
+        //     {
+        //         name    : "W2",
+        //         labels  : ["mon", "tue", "wed"],
+        //         values  : [5, 15, 25]
+        //     },
+        //     {
+        //         name    : "W2",
+        //         labels  : ["mon", "tue", "wed"],
+        //         values  : [5, 15, 25]
+        //     },
+        //     {
+        //         name    : "W2",
+        //         labels  : ["mon", "tue", "wed"],
+        //         values  : [5, 15, 15]
+        //     }
+        // ];
 
+        var MOCK = {
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            dataset: [
+                {
+                    name  : "Views",
+                    values: [7.5, 23, 30, 6, 12]
+                },
+                {
+                    name  : "Likes",
+                    values: [15, 10, 15, 43, 30]
+                },
+                {
+                    name  : "Shares",
+                    values: [16, 11, 16, 44, 31]
+                }
+            ]
+        };
 
-        MOCK.push [
-            {
-                labels: ["day 1", "day 2", "day 3", "day 4", "day 5"],
-                values: [0,25,50,75,100]
-            },
-            {
-                labels: ["day 1", "day 2", "day 3", "day 4", "day 5"],
-                values: [0,25,50,75,100]
-            }
-        ];
+        // var MOCK = {
+        //     name    : "Week 1",
+        //     labels  : ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+        //     values  : [1,3,8,14,31]
+        // };
 
         var container = document.getElementById("bar_chart");
         var chart = new Chart.Bar(container);
-        chart.setData(MOCK[0]);
+        chart.setData(MOCK);
         chart.draw();
-
 
     </script>
 </body>

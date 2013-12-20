@@ -82,7 +82,7 @@
         ]);
         MOCK.push([
             { label: "el -100",  value: -100},
-            { label: "el  0",  value: 0}
+            { label: "el  0",    value: 0}
         ]);
         MOCK.push([
             { label: "el -200",  value: -200},
@@ -111,15 +111,7 @@
                 chart.draw();
                 currentIndex++;
             }
-            setTimeout(doTest, 1000);
-        };
-
-        var _getValues = function(data) {
-            var values = [];
-            for(var i = 0, n = data.length; i < n; i++) {
-                values.push(data[i].value);
-            }
-            return values;
+            // setTimeout(doTest, 1000);
         };
 
         document.body.addEventListener("click", function() { stop = !stop; });

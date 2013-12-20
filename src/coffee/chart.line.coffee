@@ -1,6 +1,6 @@
 class Chart.Line extends Base.Linear
 
-  BARS_PADDING = 0
+  BARS_PADDING = 5
 
   constructor: ->
     super

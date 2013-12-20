@@ -8,84 +8,79 @@ class Base.Linear extends Base
     super
     @ruler = new Ruler()
     @margins = top: 0, right: 0, bottom: 0, left: 0
-    @width = 100
+    @bars_padding = 0
+    @width  = 100
     @height = 100
+    @units  = "%"
 
   # Draws all the chart
   draw: ->
     super
     do @_setItemAnchorSize
     do @drawDrawableContainer
-    do @drawRulerDivisors
-    for itemData, index in @data.slice(if @is_data_table then "1" else "0")
-      @drawItem(itemData, index)
+    do @drawRuler
 
-  # Calcs drawable area width and height based on margins
-  calcDrawableArea: ->
-    @drawable_width  = @width - @margins.left - @margins.right
-    @drawable_height = @height - @margins.top - @margins.bottom
+    for label, index in @data.labels
+      @drawItem label, index
 
   # Draws a square for the drawable area with ruler styles
   drawDrawableContainer: ->
-    uiel = new UI.Element.Bar("rect", {
+    uiel = new UI.Element.Bar "rect", {
       class   : "ruler"
-      x       : "#{@margins.left}%"
-      y       : "#{@margins.top}%"
-      width   : "#{@drawable_width}%"
-      height  : "#{@drawable_height}%"
-    })
+      x       : "#{@margins.left}#{@units}"
+      y       : "#{@margins.top}#{@units}"
+      width   : "#{@drawable_width}#{@units}"
+      height  : "#{@drawable_height}#{@units}"
+    }
     @_appendUIElement uiel
 
-  # Draws a bar
-  drawItem: (data, index) ->
-    if @is_data_table
-      @_drawItem(@data[0][index2], value, index, index2) for value, index2 in data
-    else @_drawItem(data.label, data.value, index)
+  drawItem: (label, index) ->
+    for dataset, i in @data.dataset
+      factor_h = @calcItemH(dataset.values[index])
+      factor_y = @calcItemY(index, dataset.values[index], factor_h, i)
+      factor_w = @calcItemW(dataset.values[index])
+      factor_x = @calcItemX(index, dataset.values[index], factor_w, i)
+      attributes =
+        "x"       : @drawable_width * factor_x + @margins.left
+        "y"       : @drawable_height * factor_y + @margins.top
+        "width"   : @drawable_width * factor_w
+        "height"  : @drawable_height * factor_h
+      @_drawBar label, dataset, attributes, index
+      i++
 
-  _drawItem: (label, value, index, index2=null) ->
-    factor_h = @calcItemH value
-    factor_y = @calcItemY index, value, factor_h, index2
-    factor_w = @calcItemW value
-    factor_x = @calcItemX index, value, factor_w, index2
+    @_drawBarLabel label, attributes, index
 
-    attributes =
-      "x"       : @drawable_width * factor_x + @margins.left
-      "y"       : @drawable_height * factor_y + @margins.top
-      "width"   : @drawable_width * factor_w
-      "height"  : @drawable_height * factor_h
-
-    # Draw bar
+  _drawBar: (label, dataset, attributes, subindex) ->
     ui_bar = new UI.Element.Bar "rect",
-      "x"       : "#{attributes.x}%"
-      "y"       : "#{attributes.y}%"
-      "width"   : "#{attributes.width}%"
-      "height"  : "#{attributes.height}%"
+      "x"       : "#{attributes.x}#{@units}"
+      "y"       : "#{attributes.y}#{@units}"
+      "width"   : "#{attributes.width}#{@units}"
+      "height"  : "#{attributes.height}#{@units}"
       "class"   : "bar"
-    @attachItemEvents ui_bar, {label: label, value: value}
+    @attachItemEvents label, ui_bar, dataset, subindex
     @_appendUIElement ui_bar
 
-    # Draw label
+  _drawBarLabel: (label, attributes, index) ->
     if @ruler.axis is "y"
       ui_label = new UI.Element "text",
-        "x"               : "#{attributes.x + @item_anchor_size * 0.5 - BARS_PADDING * 0.5}%"
-        "y"               : "#{@height - @margins.bottom * 0.5}%"
+        "x"               : "#{@item_anchor_size * index + @item_anchor_size / 2 + @margins.left}#{@units}"
+        "y"               : "#{@height - @margins.bottom * 0.5}#{@units}"
         "text-anchor"     : "middle"
         "pointer-events"  : "none"
     else
       ui_label = new UI.Element "text",
-        "x"               : "#{@margins.left}%"
-        "y"               : "#{@item_anchor_size * index + @item_anchor_size * 0.5 + @margins.top}%"
-        "dx"              : "-1%"
-        "dy"              : "1%"
+        "x"               : "#{@margins.left}#{@units}"
+        "y"               : "#{@item_anchor_size * index + @item_anchor_size * 0.5 + @margins.top}#{@units}"
+        "dx"              : "-1#{@units}"
+        "dy"              : "1#{@units}"
         "text-anchor"     : "end"
         "pointer-events"  : "none"
 
     ui_label.element.textContent = label
     @_appendUIElement ui_label
 
-
   # Ruler draw functions
-  drawRulerDivisors: ->
+  drawRuler: ->
     @ruler.setLimits @min, @max
     @ruler.setLinearCoords @drawable_height, @drawable_width, @margins
     # lines
@@ -96,46 +91,48 @@ class Base.Linear extends Base
     @drawRulerLabel zero_coords, true
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
-  drawRuleLine: (coords, isZero=false) ->
+  drawRuleLine: (coords, isZero = false) ->
     zeroClass = if isZero then " zero" else ""
     line = new UI.Element "line",
-      "x1"    : "#{coords.x1}%"
-      "x2"    : "#{coords.x2}%"
-      "y1"    : "#{coords.y1}%"
-      "y2"    : "#{coords.y2}%"
+      "x1"    : "#{coords.x1}#{@units}"
+      "x2"    : "#{coords.x2}#{@units}"
+      "y1"    : "#{coords.y1}#{@units}"
+      "y2"    : "#{coords.y2}#{@units}"
       "class" : "ruler#{zeroClass}"
     @_appendUIElement line
 
   drawRulerLabel: (attributes, isZero=false) ->
     labelDef =
-      "x"           : "#{attributes.x}%"
-      "y"           : "#{attributes.y}%"
+      "x"           : "#{attributes.x}#{@units}"
+      "y"           : "#{attributes.y}#{@units}"
       "class"       : if isZero then "zero" else ""
 
     if @ruler.axis is "y"
-      labelDef.dx = "-1%"
-      labelDef.dy = "1%"
+      labelDef.dx = "-1#{@units}"
+      labelDef.dy = "1#{@units}"
       labelDef["text-anchor"] = "end"
     else
-      labelDef.dy = "2%"
+      labelDef.dy = "2#{@units}"
       labelDef["text-anchor"] = "middle"
 
     uiel = new UI.Element "text", labelDef
-    uiel.element.textContent = parseFloat(attributes.label).toFixed(0)
+    uiel.element.textContent = parseFloat(attributes.label).toFixed(2)
     @_appendUIElement uiel
 
-  attachItemEvents: (bar, barData) ->
+  attachItemEvents: (label, bar, dataset, subindex) ->
     bar.bind "mouseover", ->
       bar.addClass "over"
-      Tooltip.html _tooltipHTML(barData)
+      Tooltip.html _tooltipHTML(dataset, subindex)
       Tooltip.show()
 
     bar.bind "mouseleave", (e) ->
       bar.removeClass "over"
       Tooltip.hide()
 
-  _tooltipHTML = (data) ->
+  _tooltipHTML = (data, index) ->
     """
-    #{data.label}
-    <h1>#{data.value}</h1>
+    #{data.name}
+    <h1>#{data.values[index]}</h1>
     """
+
+
