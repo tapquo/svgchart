@@ -10,7 +10,7 @@ class Chart.Bar extends Base.Linear
 
   # Sets width of the bar
   _setItemAnchorSize: ->
-    @item_anchor_size = @drawable_width / (@data.labels.length)
+    @item_anchor_size = @drawable_width / @data.labels.length
 
   # Returns real width of a bar
   calcItemW: (value) ->

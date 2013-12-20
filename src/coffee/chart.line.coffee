@@ -10,8 +10,7 @@ class Chart.Line extends Base.Linear
 
   # Sets width of the bar
   _setItemAnchorSize: ->
-    diff = if @is_data_table then 1 else 0
-    @item_anchor_size = @drawable_height / (@data.length - diff)
+    @item_anchor_size = @drawable_height / @data.labels.length
 
   # Returns real width of a bar
   calcItemW: (value) ->
@@ -20,14 +19,8 @@ class Chart.Line extends Base.Linear
 
   # Returns height factor of a bar
   calcItemH: (value) ->
-    if @is_data_table
-      anchor_size = @item_anchor_size / @data[0].length
-      padding = BARS_PADDING / @data[0].length
-    else
-      anchor_size = @item_anchor_size
-      padding = BARS_PADDING
-
-    h = (anchor_size - padding) / @drawable_height
+    n_datasets = @data.dataset.length
+    h = (@item_anchor_size - BARS_PADDING) / n_datasets / @drawable_height
     if h is 0 then 0.01 else h
 
   # Returns real X position of a bar based on index
@@ -36,6 +29,6 @@ class Chart.Line extends Base.Linear
 
   # Returns position y factor of a bar
   calcItemY: (index, value, height, index2) ->
-    deltaY = if @is_data_table then (@item_anchor_size - BARS_PADDING) / @data[0].length * index2 else 0
-    ((@item_anchor_size * index) + (deltaY) + (BARS_PADDING * 0.5)) / @drawable_height
+    deltaX = (@item_anchor_size - BARS_PADDING) / @data.dataset.length * index2
+    ((@item_anchor_size * index + deltaX) + (BARS_PADDING * 0.5)) / @drawable_height
 
