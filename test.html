@@ -13,49 +13,47 @@
     </style>
 </head>
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
 
-
-    <!--
-    <svg id="bar_chart_test" class="chart" xmlns="http://www.w3.org/2000/svg">
-        <style>@import url(../dist/svgchart.0.0.1.css);</style>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-        <rect width="20" height="20" fill="red"></rect>
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <style type="text/css">
-            circle {
-               stroke: #006600;
-               fill:   #00cc00;
-            }
-        </style>
-        <circle  cx="40" cy="40" r="24"/>
-    </svg>
-    -->
-
-    <div data-svgchart="">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" >
-            <polygon id="star" points="100,10 40,180 190,60 10,60 160,300"
-                style="
-                    fill:lime;
-                    stroke:purple;
-                    stroke-width:5;
-                    fill-rule:evenodd;
-                "
+        <rect id="cuadrado" x="10" y="10" height="60" width="60"
+             style="stroke:#ff0000; fill: #0000ff">
+<!--
+             <animate
+                attributeType="XML"
+                attributeName="width"
+                begin="indefinite"
+                dur="1s"
+                fill="freeze"
+                from="10"
+                to="500"
             >
-        </svg>
-    </div>
-</body>
-<script type="text/javascript">
+            </animate> -->
 
-    var chart = document.querySelector("[data-svgchart]");
-    var star = document.querySelector("#star");
+<!--
+            <animateTransform
+                attributeName="transform"
+                begin="1s"
+                dur="2s"
+                type="rotate"
+                from="0 500 500"
+                to="360 500 500"
+                repeatCount="indefinite"
+            /> -->
+        </rect>
 
-    star.style.fill = "lime";
-    star.style.stroke = "purple";
-    star.style.strokeWidth = "2";
-    star.style.fillRule = "evenodd";
-
-</script>
+    </svg>
+    <script type="text/javascript">
+        var rect = document.getElementById("cuadrado");
+        var anim = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+        anim.setAttribute("attributeType", "XML");
+        anim.setAttribute("attributeName", "width");
+        anim.setAttribute("begin", "0s");
+        anim.setAttribute("dur", "1s");
+        anim.setAttribute("fill", "freeze");
+        anim.setAttribute("from", "10");
+        anim.setAttribute("to", "500");
+        rect.appendChild(anim);
+        anim.beginElement();
+    </script>
 </html>
