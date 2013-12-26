@@ -8,6 +8,9 @@ class UI.Element
     if value then @element.setAttribute attribute, value
     else return @element.getAttribute attribute
 
+  append: (uiel) ->
+    @element.appendChild uiel.element
+
   addClass: (className) ->
     current = @attr("class")
     unless current then @attr("class", className)

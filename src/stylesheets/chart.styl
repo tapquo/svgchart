@@ -1,16 +1,50 @@
+
 [data-svgchart-type]
 
+  // Item bars
+  & .item
+    fill: ITEM_BACKGROUND_DEFAULT
+    stroke: darken(ITEM_BACKGROUND_DEFAULT, 30%)
+    stroke-width: 1px
+    opacity: 0.7
+
+    &:hover
+      opacity: 0.9
+
+    &.index_0
+      fill: ITEM_BACKGROUND_1
+      stroke: darken(ITEM_BACKGROUND_1, 30%)
+
+    &.index_1
+      fill: ITEM_BACKGROUND_2
+      stroke: darken(ITEM_BACKGROUND_2, 30%)
+
+    &.index_2
+      fill: ITEM_BACKGROUND_3
+      stroke: darken(ITEM_BACKGROUND_3, 30%)
+
+    &.index_3
+      fill: ITEM_BACKGROUND_4
+      stroke: darken(ITEM_BACKGROUND_4, 30%)
+
+    &.index_4
+      fill: ITEM_BACKGROUND_5
+      stroke: darken(ITEM_BACKGROUND_5, 30%)
+
+    &.index_5
+      fill: ITEM_BACKGROUND_6
+      stroke: darken(ITEM_BACKGROUND_6, 30%)
+
+  // Ruler
   & .ruler
-    pointer-events: none
-    stroke: rgba(0,0,0, 0.3)
-    stroke-width: 0.2
-    fill: transparent
+    stroke: RULER_COLOR
+    stroke-width: 1
+    opacity: 0.4
+    fill: rgba(255,0,0,0.01)
 
-    &.zero
-      stroke-width: 4
-      stroke: rgba(0,0,0, 0.7)
-
-  & text.zero
+  & path
+    fill: rgba(255, 0, 0, 0.1)
     stroke: red
-    fill: red
-    font-size: 1.8em
+
+
+

@@ -1,14 +1,12 @@
 class Base.Linear extends Base
 
-  # Define bars separation
-  BARS_PADDING = 1
-
   # Sets data-svgchart-type to svg and creates ruler
   constructor: ->
     super
+    @bars_padding = 1
     @ruler = new Ruler()
-    @margins = top: 0, right: 0, bottom: 0, left: 0
     @bars_padding = 0
+    # @units  = ""
     @width  = 100
     @height = 100
     @units  = "%"
@@ -19,7 +17,9 @@ class Base.Linear extends Base
     do @_setItemAnchorSize
     do @drawDrawableContainer
     do @drawRuler
+    do @drawItems
 
+  drawItems: ->
     for label, index in @data.labels
       @drawItem label, index
 
@@ -35,47 +35,47 @@ class Base.Linear extends Base
     @_appendUIElement uiel
 
   drawItem: (label, index) ->
-    for dataset, i in @data.dataset
+    for dataset, subindex in @data.dataset
       factor_h = @calcItemH(dataset.values[index])
-      factor_y = @calcItemY(index, dataset.values[index], factor_h, i)
+      factor_y = @calcItemY(index, dataset.values[index], factor_h, subindex)
       factor_w = @calcItemW(dataset.values[index])
-      factor_x = @calcItemX(index, dataset.values[index], factor_w, i)
+      factor_x = @calcItemX(index, dataset.values[index], factor_w, subindex)
       attributes =
         "x"       : @drawable_width * factor_x + @margins.left
         "y"       : @drawable_height * factor_y + @margins.top
         "width"   : @drawable_width * factor_w
         "height"  : @drawable_height * factor_h
-      @_drawBar label, dataset, attributes, index
-      i++
+      @_drawBar label, dataset, attributes, index, subindex
 
     @_drawBarLabel label, attributes, index
 
-  _drawBar: (label, dataset, attributes, subindex) ->
+  _drawBar: (label, dataset, attributes, index, subindex) ->
     ui_bar = new UI.Element.Bar "rect",
       "x"       : "#{attributes.x}#{@units}"
       "y"       : "#{attributes.y}#{@units}"
       "width"   : "#{attributes.width}#{@units}"
       "height"  : "#{attributes.height}#{@units}"
-      "class"   : "bar"
-    @attachItemEvents label, ui_bar, dataset, subindex
+      "class"   : "item index_#{subindex}"
+    @attachItemEvents label, ui_bar, dataset, index
     @_appendUIElement ui_bar
+    if @_appendAnimation then @_appendAnimation(ui_bar)
 
   _drawBarLabel: (label, attributes, index) ->
+    labelAttributes = {"pointer-events"  : "none"}
     if @ruler.axis is "y"
-      ui_label = new UI.Element "text",
+      labelAttributes =
         "x"               : "#{@item_anchor_size * index + @item_anchor_size / 2 + @margins.left}#{@units}"
         "y"               : "#{@height - @margins.bottom * 0.5}#{@units}"
         "text-anchor"     : "middle"
-        "pointer-events"  : "none"
     else
-      ui_label = new UI.Element "text",
+      labelAttributes =
         "x"               : "#{@margins.left}#{@units}"
         "y"               : "#{@item_anchor_size * index + @item_anchor_size * 0.5 + @margins.top}#{@units}"
         "dx"              : "-1#{@units}"
         "dy"              : "1#{@units}"
         "text-anchor"     : "end"
-        "pointer-events"  : "none"
 
+    ui_label = new UI.Element "text", labelAttributes
     ui_label.element.textContent = label
     @_appendUIElement ui_label
 
@@ -128,6 +128,8 @@ class Base.Linear extends Base
     bar.bind "mouseleave", (e) ->
       bar.removeClass "over"
       Tooltip.hide()
+
+  _setItemAnchorSize: -> @
 
   _tooltipHTML = (data, index) ->
     """
