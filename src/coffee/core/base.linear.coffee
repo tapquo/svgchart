@@ -3,9 +3,9 @@ class Base.Linear extends Base
   # Sets data-svgchart-type to svg and creates ruler
   constructor: ->
     super
-    @bars_padding = 1
+    @bars_padding = 2
     @ruler = new Ruler()
-    @bars_padding = 0
+
     # @units  = ""
     @width  = 100
     @height = 100

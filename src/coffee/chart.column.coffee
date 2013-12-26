@@ -1,5 +1,7 @@
 class Chart.Column extends Base.Linear
 
+  ANIMATION_DURATION = "0.4s"
+
   constructor: ->
     super
     @bars_padding = 1
@@ -37,17 +39,17 @@ class Chart.Column extends Base.Linear
       "attributeType" : "XML"
       "attributeName" : "height"
       "begin"         : "0s"
-      "dur"           : "1s"
+      "dur"           : ANIMATION_DURATION
       "fill"          : "freeze"
       "from"          : "0"
       "to"            : el.attr("height")
 
-    if parseFloat(el.attr("y").replace("%", "")) < @ruler.coords.zero.y1
+    if parseFloat(el.attr("y")) < @ruler.coords.zero.y1
       el.append new UI.Element "animate",
         "attributeType" : "XML"
         "attributeName" : "y"
         "begin"         : "0s"
-        "dur"           : "1s"
+        "dur"           : ANIMATION_DURATION
         "fill"          : "freeze"
         "from"          : "#{@ruler.coords.zero.y1}%"
         "to"            : el.attr("y")

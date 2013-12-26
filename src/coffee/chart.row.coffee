@@ -1,6 +1,6 @@
 class Chart.Row extends Base.Linear
 
-  BARS_PADDING = 5
+  ANIMATION_DURATION = "0.4s"
 
   constructor: ->
     super
@@ -20,7 +20,7 @@ class Chart.Row extends Base.Linear
   # Returns height factor of a bar
   calcItemH: (value) ->
     n_datasets = @data.dataset.length
-    h = (@item_anchor_size - BARS_PADDING) / n_datasets / @drawable_height
+    h = (@item_anchor_size - @bars_padding) / n_datasets / @drawable_height
     if h is 0 then 0.01 else h
 
   # Returns real X position of a bar based on index
@@ -29,25 +29,25 @@ class Chart.Row extends Base.Linear
 
   # Returns position y factor of a bar
   calcItemY: (index, value, height, index2) ->
-    deltaX = (@item_anchor_size - BARS_PADDING) / @data.dataset.length * index2
-    ((@item_anchor_size * index + deltaX) + (BARS_PADDING * 0.5)) / @drawable_height
+    deltaX = (@item_anchor_size - @bars_padding) / @data.dataset.length * index2
+    ((@item_anchor_size * index + deltaX) + (@bars_padding * 0.5)) / @drawable_height
 
   _appendAnimation: (el) ->
     el.append new UI.Element "animate",
       "attributeType" : "XML"
       "attributeName" : "width"
       "begin"         : "0s"
-      "dur"           : "1s"
+      "dur"           : ANIMATION_DURATION
       "fill"          : "freeze"
       "from"          : "0"
       "to"            : el.attr("width")
 
-    if parseFloat(el.attr("x").replace("%", "")) < @ruler.coords.zero.x1
+    if parseFloat(el.attr("x")) < @ruler.coords.zero.x1
       el.append new UI.Element "animate",
         "attributeType" : "XML"
         "attributeName" : "x"
         "begin"         : "0s"
-        "dur"           : "1s"
+        "dur"           : ANIMATION_DURATION
         "fill"          : "freeze"
         "from"          : "#{@ruler.coords.zero.x1}%"
         "to"            : el.attr("x")
