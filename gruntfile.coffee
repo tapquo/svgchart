@@ -26,7 +26,7 @@ module.exports = (grunt) ->
       ]
       styles: [
         "src/stylesheets/chart.styl"
-        "src/stylesheets/chart.*.styl"
+        # "src/stylesheets/chart.*.styl"
         "src/stylesheets/tooltip.styl"
       ]
 
