@@ -26,7 +26,7 @@ Tooltip = do ->
     _container.removeEventListener "mousemove", _onMove
 
   _onMove = (e) ->
-    _el.style.top = "#{e.y - 20}px"
+    _el.style.top = "#{e.y - 20 + document.body.scrollTop}px"
     _el.style.left = "#{e.x + 20}px"
 
   init: init

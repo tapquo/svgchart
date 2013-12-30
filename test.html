@@ -4,56 +4,52 @@
     <meta charset="UTF-8">
     <title>SvgChart</title>
     <style type="text/css">
-        [data-svgchart] {
-            margin: 50px auto;
+        #svg {
+            padding: 0;
             width: 500px;
-            height: 400px;
+            height: 500px;
             background-color: #ddd;
+        }
+        #svg line {
+            stroke: green;
+            stroke-width: 0.5;
+        }
+        #svg path {
+            stroke: blue;
+            stroke-width: 2;
+            fill: transparent;
         }
     </style>
 </head>
 <body>
-    <svg xmlns="http://www.w3.org/2000/svg"
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink">
-
-        <rect id="cuadrado" x="10" y="10" height="60" width="60"
-             style="stroke:#ff0000; fill: #0000ff">
-<!--
-             <animate
-                attributeType="XML"
-                attributeName="width"
-                begin="indefinite"
-                dur="1s"
-                fill="freeze"
-                from="10"
-                to="500"
-            >
-            </animate> -->
-
-<!--
-            <animateTransform
-                attributeName="transform"
-                begin="1s"
-                dur="2s"
-                type="rotate"
-                from="0 500 500"
-                to="360 500 500"
-                repeatCount="indefinite"
-            /> -->
-        </rect>
-
+        <path d="
+            M 100,100
+            C 150,100 150,200 200,200
+            C 250,200 250,0 300, 0
+            C 350,0 350,200 400,200
+        "></path>
     </svg>
     <script type="text/javascript">
-        var rect = document.getElementById("cuadrado");
-        var anim = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-        anim.setAttribute("attributeType", "XML");
-        anim.setAttribute("attributeName", "width");
-        anim.setAttribute("begin", "0s");
-        anim.setAttribute("dur", "1s");
-        anim.setAttribute("fill", "freeze");
-        anim.setAttribute("from", "10");
-        anim.setAttribute("to", "500");
-        rect.appendChild(anim);
-        anim.beginElement();
+        var line,
+            y,
+            svg = document.getElementById("svg");
+
+        for(var i = 0; i < 5; i++) {
+            y = 100 * i;
+            line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", 0);
+            line.setAttribute("x2", "100%");
+            line.setAttribute("y1", y);
+            line.setAttribute("y2", y);
+            svg.appendChild(line);
+            line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", y);
+            line.setAttribute("x2", y);
+            line.setAttribute("y1", 0);
+            line.setAttribute("y2", "100%");
+            svg.appendChild(line);
+        }
     </script>
 </html>

@@ -25,29 +25,31 @@
     <script type="text/javascript">
 
         var MOCK = {
-            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            labels: ["dia1", "dia2", "dia3", "dia4", "dia5", "dia6", "dia7", "dia8"],
             dataset: [
+                // {
+                //     name  : "Shares",
+                //     style : "blue",
+                //     values: [0, 50, 10, 20, 0, 90, 70, 20]
+                // },
                 {
                     name  : "Views",
                     style : "red",
-                    values: [5, 10, 15, 20, 25]
-                },
+                    values: [150, 100, 150, 430, 300, -100, 500, 10]
+                }
+                ,
                 {
                     name  : "Likes",
                     style : "green",
-                    values: [15, 10, 15, 43, 30]
-                },
-                {
-                    name  : "Shares",
-                    style : "blue",
-                    values: [16, -43, 16, 33, 31]
+                    values: [15, 10, 15, 43, 30, -10, 50, 10]
                 }
+
             ]
         };
 
-
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Column(container);
+        var chart = new Chart.Line(container);
+        if (chart.setTension) chart.setTension(0.5);
         chart.setData(MOCK);
         chart.draw();
 
