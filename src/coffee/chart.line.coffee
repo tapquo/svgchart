@@ -37,6 +37,7 @@ class Chart.Line extends Base.Linear
       class: "item index_#{index}"
     el = new UI.Element("circle", attributes)
     @_appendUIElement el
+    @attachItemEvents @data.labels[index], el, dataset, subindex
     x: cx * @real_width / 100
     y: cy * @real_height / 100
 
@@ -64,11 +65,15 @@ class Chart.Line extends Base.Linear
       pathDef.push "C #{c0.x},#{c0.y} #{c1.x},#{c1.y} #{p1.x}, #{p1.y}"
 
     pathDef.push "L #{end_zero_x},#{zero_y}"
-    path = new UI.Element("path", {d: pathDef.join(" ")})
+    path = new UI.Element("path", {
+      d: pathDef.join(" ")
+      "pointer-events": "none"
+    })
     path.addClass "index_#{index}"
     @_appendUIElement path
 
   # Sets width of the bar
   _setItemAnchorSize: ->
     @item_anchor_size = @drawable_width / (@data.labels.length - 1)
+
 
