@@ -15,24 +15,12 @@ class Base.Linear extends Base
   draw: ->
     super
     do @_setItemAnchorSize
-    do @drawDrawableContainer
     do @drawRuler
     do @drawItems
 
   drawItems: ->
-    for label, index in @data.labels
-      @drawItem label, index
-
-  # Draws a square for the drawable area with ruler styles
-  drawDrawableContainer: ->
-    uiel = new UI.Element.Bar "rect", {
-      class   : "ruler"
-      x       : "#{@margins.left}#{@units}"
-      y       : "#{@margins.top}#{@units}"
-      width   : "#{@drawable_width}#{@units}"
-      height  : "#{@drawable_height}#{@units}"
-    }
-    @_appendUIElement uiel
+    @drawItem label, index for label, index in @data.labels
+    @_drawItemSeparator index
 
   drawItem: (label, index) ->
     for dataset, subindex in @data.dataset
@@ -46,9 +34,8 @@ class Base.Linear extends Base
         "width"   : @drawable_width * factor_w
         "height"  : @drawable_height * factor_h
       @_drawBar label, dataset, attributes, index, subindex
-
     @_drawBarLabel label, attributes, index
-    @_drawBarSeparator index
+    @_drawItemSeparator index
 
   _drawBar: (label, dataset, attributes, index, subindex) ->
     ui_bar = new UI.Element.Bar "rect",
@@ -89,11 +76,10 @@ class Base.Linear extends Base
     @drawRuleLine coords for coords in @ruler.coords.lines
     # labels
     zero_coords = x:@ruler.coords.zero.x1, y: @height - @margins.bottom, label: "0"
-    @drawRulerLabel zero_coords, true
+    # @drawRulerLabel zero_coords, true
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
   drawRuleLine: (coords, isZero = false) ->
-    if isZero then console.log "Pinto zero", coords
     zeroClass = if isZero then " zero" else ""
     line = new UI.Element "line",
       "x1"    : "#{coords.x1}#{@units}"

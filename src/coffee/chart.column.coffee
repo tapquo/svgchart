@@ -34,7 +34,7 @@ class Chart.Column extends Base.Linear
     v = if value < 0 then @ruler.zero else @ruler.zero + height
     return 1 - v
 
-  _drawBarSeparator: (index) ->
+  _drawItemSeparator: (index) ->
     x = @item_anchor_size * index + @margins.left
     y1 = @margins.top
     y2 = @margins.top + @drawable_height
@@ -43,7 +43,7 @@ class Chart.Column extends Base.Linear
       x2: "#{x}#{@units}"
       y1: "#{y1}#{@units}"
       y2: "#{y2}#{@units}"
-      class: "ruler"
+      class: "ruler item_separator"
     @_appendUIElement separator
 
   _appendAnimation: (el) ->

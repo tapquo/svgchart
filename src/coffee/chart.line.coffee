@@ -80,8 +80,6 @@ class ChartLine extends Base.Linear
     @item_anchor_size = @drawable_width / (@data.labels.length - 1)
 
 
-
-
 class Chart.Line extends ChartLine
   constructor: ->
     super

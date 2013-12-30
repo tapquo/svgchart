@@ -32,7 +32,7 @@ class Chart.Row extends Base.Linear
     deltaX = (@item_anchor_size - @bars_padding) / @data.dataset.length * index2
     ((@item_anchor_size * index + deltaX) + (@bars_padding * 0.5)) / @drawable_height
 
-  _drawBarSeparator: (index) ->
+  _drawItemSeparator: (index) ->
     y = @item_anchor_size * index + @margins.top
     x1 = @margins.left
     x2 = @margins.left + @drawable_width
@@ -41,7 +41,7 @@ class Chart.Row extends Base.Linear
       x2: "#{x2}#{@units}"
       y1: "#{y}#{@units}"
       y2: "#{y}#{@units}"
-      class: "ruler"
+      class: "ruler item_separator"
     @_appendUIElement separator
 
 
