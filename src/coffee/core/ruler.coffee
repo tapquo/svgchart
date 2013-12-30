@@ -10,6 +10,10 @@ class Ruler
     @max            = null
     @zero_pos       = null
 
+  # Sets the number of line divisors
+  # @param num_divisors The number of divisors
+  setNumDivisors: (@num_divisors) -> @
+
   # Sets the limits of the chart
   # @param min The min value of the chart
   # @param max The max value of the chart
