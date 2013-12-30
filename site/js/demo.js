@@ -2,17 +2,17 @@ document.body.onload = function() {
 
     var SIMPLE_MOCK = {
         labels: ["January", "February", "March"],
-        dataset: [{
-            name: "Views",
-            values: [-10, 15, 25]
-        }]
+        dataset: [
+            {name: "Views", values: [-10, 15, 25]}
+        ]
     };
 
     var MULTI_MOCK = {
         labels: ["January", "February", "March"],
         dataset: [
-            SIMPLE_MOCK.dataset[0],
+            {name: "Views", values: [-10, 15, 25]},
             {name: "Likes", values: [6, -8, 10]},
+            {name: "Retweets", values: [-1, 8, 18]},
             {name: "Shares", values: [6, 12, 18]}
         ]
     };
@@ -62,7 +62,11 @@ document.body.onload = function() {
     var PIE_MOCK = [
         {name: "Likes",     value: 16},
         {name: "Views",     value: 8},
-        {name: "Shares",    value: 12}
+        {name: "Shares",    value: 12},
+        {name: "Others 1",  value: 8},
+        {name: "Others 2",  value: 18},
+        {name: "Others 3",  value: 28},
+        {name: "Others 4",  value: 61}
     ];
 
     var pieChart = new Chart.Pie(document.getElementById("pie_simple"));

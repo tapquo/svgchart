@@ -48,6 +48,7 @@ class Base.Linear extends Base
       @_drawBar label, dataset, attributes, index, subindex
 
     @_drawBarLabel label, attributes, index
+    @_drawBarSeparator index
 
   _drawBar: (label, dataset, attributes, index, subindex) ->
     ui_bar = new UI.Element.Bar "rect",
