@@ -1,10 +1,10 @@
 
 [data-svgchart-type]
 
-  // Item bars
+  // Item elements (bar, point or pie)
   & .item
     fill: ITEM_BACKGROUND_DEFAULT
-    stroke: darken(ITEM_BACKGROUND_DEFAULT, 30%)
+    stroke: darken(ITEM_BACKGROUND_DEFAULT, ITEM_OPACITY)
     stroke-width: 1px
     opacity: 0.7
 
@@ -13,37 +13,37 @@
 
   & .index_0
     fill: ITEM_BACKGROUND_1
-    stroke: darken(ITEM_BACKGROUND_1, 30%)
+    stroke: darken(ITEM_BACKGROUND_1, ITEM_OPACITY)
 
   & .index_1
     fill: ITEM_BACKGROUND_2
-    stroke: darken(ITEM_BACKGROUND_2, 30%)
+    stroke: darken(ITEM_BACKGROUND_2, ITEM_OPACITY)
 
   & .index_2
     fill: ITEM_BACKGROUND_3
-    stroke: darken(ITEM_BACKGROUND_3, 30%)
+    stroke: darken(ITEM_BACKGROUND_3, ITEM_OPACITY)
 
   & .index_3
     fill: ITEM_BACKGROUND_4
-    stroke: darken(ITEM_BACKGROUND_4, 30%)
+    stroke: darken(ITEM_BACKGROUND_4, ITEM_OPACITY)
 
   & .index_4
     fill: ITEM_BACKGROUND_5
-    stroke: darken(ITEM_BACKGROUND_5, 30%)
+    stroke: darken(ITEM_BACKGROUND_5, ITEM_OPACITY)
 
   & .index_5
     fill: ITEM_BACKGROUND_6
-    stroke: darken(ITEM_BACKGROUND_6, 30%)
+    stroke: darken(ITEM_BACKGROUND_6, ITEM_OPACITY)
 
   // Ruler
   & .ruler
     stroke: RULER_COLOR
-    stroke-width: 1
+    stroke-width: 0.9
     opacity: 0.4
     fill: rgba(255,0,0,0.01)
 
   & path
-    opacity: 0.4
+    opacity: 0.3
   //   fill: rgba(255, 0, 0, 0.1)
   //   stroke: red
 

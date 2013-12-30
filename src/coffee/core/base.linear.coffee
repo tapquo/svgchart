@@ -120,14 +120,21 @@ class Base.Linear extends Base
     @_appendUIElement uiel
 
   attachItemEvents: (label, bar, dataset, subindex) ->
-    bar.bind "mouseover", ->
+    bar.bind "mouseover,click", =>
       bar.addClass "over"
       Tooltip.html _tooltipHTML(dataset, subindex)
       Tooltip.show()
-
+      clearTimeout @tooltip_timeout
+      @tooltip_timeout = setTimeout =>
+        bar.removeClass "over"
+        Tooltip.hide()
+      , 2000
     bar.bind "mouseleave", (e) ->
+      clearTimeout @tooltip_timeout
       bar.removeClass "over"
       Tooltip.hide()
+
+
 
   _setItemAnchorSize: -> @
 

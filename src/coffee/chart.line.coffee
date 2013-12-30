@@ -31,7 +31,7 @@ class Chart.Line extends Base.Linear
     cy = @margins.top + @drawable_height * factor_y
     cx = @item_anchor_size * subindex + @margins.left
     attributes =
-      r   : 3
+      r   : 6
       cx  : "#{cx}#{@units}"
       cy  : "#{cy}#{@units}"
       class: "item index_#{index}"
@@ -44,9 +44,9 @@ class Chart.Line extends Base.Linear
   _drawItemLabel: (index, point) ->
     label = @data.labels[index]
     labelEl = new UI.Element "text",
-      x: point.x
-      y: "#{@height - @margins.bottom / 2}#{@units}"
-      "text-anchor": "middle"
+      "x"           : point.x
+      "y"           : "#{@height - @margins.bottom / 2}#{@units}"
+      "text-anchor" : "middle"
     labelEl.element.textContent = label
     @_appendUIElement labelEl
 
@@ -57,17 +57,16 @@ class Chart.Line extends Base.Linear
     pathDef = ["M #{start_zero_x} #{zero_y} L #{points[0].x},#{points[0].y}"]
     num_points = points.length
     for i in [0..num_points - 2]
-      p0 = points[i]
-      p1 = points[i+1]
-      xdiff = (p1.x - p0.x) * @tension
-      c0 = x: (p0.x + xdiff), y: p0.y
-      c1 = x: (p1.x - xdiff), y: p1.y
-      pathDef.push "C #{c0.x},#{c0.y} #{c1.x},#{c1.y} #{p1.x}, #{p1.y}"
+      xdiff = (points[i+1].x - points[i].x) * @tension
+      pathDef.push "C"
+      pathDef.push "#{points[i].x + xdiff},#{points[i].y}"
+      pathDef.push "#{points[i+1].x - xdiff},#{points[i+1].y}"
+      pathDef.push "#{points[i+1].x},#{points[i+1].y}"
 
     pathDef.push "L #{end_zero_x},#{zero_y}"
     path = new UI.Element("path", {
-      d: pathDef.join(" ")
-      "pointer-events": "none"
+      "pointer-events"  : "none"
+      "d"               : pathDef.join(" ")
     })
     path.addClass "index_#{index}"
     @_appendUIElement path

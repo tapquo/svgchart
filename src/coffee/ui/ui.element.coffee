@@ -29,4 +29,5 @@ class UI.Element
       @element.parentNode.removeChild(@element)
 
   bind: (eventName, callback) ->
-    @element.addEventListener(eventName, callback, true)
+    for ev in eventName.split(",")
+      @element.addEventListener(ev, callback, true)
