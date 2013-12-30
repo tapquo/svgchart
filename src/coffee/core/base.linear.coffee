@@ -92,6 +92,7 @@ class Base.Linear extends Base
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
   drawRuleLine: (coords, isZero = false) ->
+    if isZero then console.log "Pinto zero", coords
     zeroClass = if isZero then " zero" else ""
     line = new UI.Element "line",
       "x1"    : "#{coords.x1}#{@units}"
@@ -120,18 +121,14 @@ class Base.Linear extends Base
     @_appendUIElement uiel
 
   attachItemEvents: (label, bar, dataset, subindex) ->
-    bar.bind "mouseover,click", =>
-      bar.addClass "over"
+    bar.bind "mouseover,touchstart", =>
+      Tooltip.hide()
       Tooltip.html _tooltipHTML(dataset, subindex)
       Tooltip.show()
       clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout =>
-        bar.removeClass "over"
-        Tooltip.hide()
-      , 2000
-    bar.bind "mouseleave", (e) ->
+      @tooltip_timeout = setTimeout Tooltip.hide, 2000
+    bar.bind "mouseleave", (e) =>
       clearTimeout @tooltip_timeout
-      bar.removeClass "over"
       Tooltip.hide()
 
 
@@ -143,5 +140,3 @@ class Base.Linear extends Base
     #{data.name}
     <h1>#{data.values[index]}</h1>
     """
-
-

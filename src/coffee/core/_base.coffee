@@ -37,7 +37,7 @@ class Base
   # example: [{label: '2012', value: 10}, {2013: '', value: 15}]
   setData: (@data) ->
     do @_setMaxMin
-    @num_datasets = @data.dataset.length
+    @num_datasets = if @data.dataset then @data.dataset.length else @data.length
 
   # Removes all created ui elements of the chart
   clear: ->
@@ -51,7 +51,6 @@ class Base
   _calcDrawableArea: ->
     @drawable_width  = @width - @margins.left - @margins.right
     @drawable_height = @height - @margins.top - @margins.bottom
-    console.log "draw w-h :: ", @drawable_width, @drawable_height
 
   # Appends an UI element to chart container
   # @param ui The UI element
@@ -62,7 +61,8 @@ class Base
   # Sets @max and @min based on @data
   _setMaxMin: () ->
     vals = []
-    vals = vals.concat(dataset.values) for dataset in @data.dataset
+    if @data.dataset then vals = vals.concat(dataset.values) for dataset in @data.dataset
+    else vals = vals.concat(dataset.value) for dataset in @data
     @max = Maths.max(vals)
     @min = Maths.min(vals)
 

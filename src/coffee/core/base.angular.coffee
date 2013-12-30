@@ -33,7 +33,7 @@ class Base.Angular extends Base
   # Sets total of all data values
   _setTotal: ->
     @total = 0
-    @total += parseFloat(item.value) for item in @data
+    @total += parseFloat(dataset.value) for dataset in @data
 
   # Returns cartesian coords of a given angle of the pie
   polarToCartesian: (angle, radius=null) ->
@@ -43,13 +43,14 @@ class Base.Angular extends Base
     y: @centerY + radius * Math.sin(angle)
 
   # Creates arc definition for the path element
-  describeArc: (startAngle, endAngle) ->
-    start = @polarToCartesian(endAngle)
-    end   = @polarToCartesian(startAngle)
+  describeArc: (startAngle, endAngle, factor=1) ->
+    radius = @radius * factor
+    start = @polarToCartesian(endAngle, radius)
+    end   = @polarToCartesian(startAngle, radius)
     arcSweep = if endAngle - startAngle <= Math.PI then "0" else "1"
     return """
       M #{start.x} #{start.y}
-      A #{@radius} #{@radius} 0 #{arcSweep} 0 #{end.x}, #{end.y}
+      A #{radius} #{radius} 0 #{arcSweep} 0 #{end.x}, #{end.y}
       L #{@centerX} #{@centerY}
     """
 
@@ -57,28 +58,27 @@ class Base.Angular extends Base
   drawItems: ->
     startAngle = 0
     for data, index in @data
+      label = data.name
       value = data.value
-      label = data.label
       factor = parseFloat(value / @total)
       angle = 2 * Math.PI * factor
       endAngle = startAngle + angle
       color_index =  index % NUM_COLORS
-      @_drawItemArc startAngle, endAngle, color_index, data
+      @_drawItemArc startAngle, endAngle, color_index, data #, factor
       @_drawItemLabel (startAngle + angle * 0.5), "#{label} (#{value})", factor, color_index
       startAngle += angle
 
   # Draws element arc
-  _drawItemArc: (startAngle, endAngle, index, data) ->
+  _drawItemArc: (startAngle, endAngle, index, data, factor) ->
     uiel = new UI.Element "path",
-      "class"         : "color_#{index}"
-      "d"             : @describeArc(startAngle, endAngle)
-    @attachItemEvents uiel, data
+      "class"         : "index_#{index}"
+      "d"             : @describeArc(startAngle, endAngle, factor)
+    @attachItemEvents uiel, data, index
     @_appendUIElement uiel
 
   # Draws element arc label
   _drawItemLabel: (angle, value, factor, color) ->
     labelPos = @polarToCartesian(angle, @radius - 10)
-    dy = 10 * Math.cos(angle)
     labelParams =
       "x"           : labelPos.x - 2
       "y"           : labelPos.y
@@ -89,17 +89,19 @@ class Base.Angular extends Base
     @_appendUIElement uiel
 
 
-  attachItemEvents: (bar, barData) ->
-    bar.bind "mouseover", ->
-      bar.addClass "over"
-      Tooltip.html _tooltipHTML(barData)
+  attachItemEvents: (bar, barData, index) ->
+    bar.bind "mouseover,touchstart", =>
+      Tooltip.hide()
+      Tooltip.html _tooltipHTML(barData, index)
       Tooltip.show()
-    bar.bind "mouseleave", ->
-      bar.removeClass "over"
+      clearTimeout @tooltip_timeout
+      @tooltip_timeout = setTimeout Tooltip.hide, 2000
+    bar.bind "mouseleave", (e) =>
+      clearTimeout @tooltip_timeout
       Tooltip.hide()
 
-  _tooltipHTML = (data) ->
+  _tooltipHTML = (data, index) ->
     """
-    Label: #{data.label} <br/>
-    Value: <strong>#{data.value}</strong>
+    #{data.name}
+    <h1>#{data.value}</h1>
     """

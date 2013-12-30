@@ -20,14 +20,15 @@ Tooltip = do ->
   show = ->
     _el.classList.add "show"
     _container.addEventListener "mousemove", _onMove
+    do _onMove
 
   hide = ->
     _el.classList.remove "show"
     _container.removeEventListener "mousemove", _onMove
 
-  _onMove = (e) ->
-    _el.style.top = "#{e.pageY - 20}px"
-    _el.style.left = "#{e.pageX + 20}px"
+  _onMove = ->
+    _el.style.top = "#{event.pageY - 20}px"
+    _el.style.left = "#{event.pageX + 20}px"
 
   init: init
   text: text

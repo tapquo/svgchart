@@ -39,13 +39,26 @@
   & .ruler
     stroke: RULER_COLOR
     stroke-width: 0.9
+    stroke-dasharray: 3 3
     opacity: 0.4
-    fill: rgba(255,0,0,0.01)
+    fill: none
+
+    &.zero
+      opacity: 1
+      stroke: RULER_ZERO_COLOR
+      stroke-dasharray: none
+      stroke-width: 2
+
 
   & path
     opacity: 0.3
-  //   fill: rgba(255, 0, 0, 0.1)
-  //   stroke: red
+
+  & text
+    font-size: 12px
+    pointer-events: none
 
 
 
+[data-svgchart-type="line"]
+  & path[class^="index_"]
+    fill: none

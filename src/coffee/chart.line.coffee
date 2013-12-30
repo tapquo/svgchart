@@ -1,11 +1,11 @@
-class Chart.Line extends Base.Linear
+class ChartLine extends Base.Linear
 
   constructor: ->
     super
     @points = []
     @bars_padding = 0
+    @fill_item = true
     @tension = 0.5
-    @svg.setAttribute "data-svgchart-type", "line"
     @ruler.axis = "y"
     @setMargins 10, 10, 10, 10
 
@@ -54,7 +54,12 @@ class Chart.Line extends Base.Linear
     start_zero_x = @margins.left * @real_width / 100
     zero_y = ((1 - @ruler.zero) * @drawable_height + @margins.top) * @real_height / 100
     end_zero_x = (@margins.left + @drawable_width) * @real_width / 100
-    pathDef = ["M #{start_zero_x} #{zero_y} L #{points[0].x},#{points[0].y}"]
+    pathDef = []
+    if @fill_item
+      pathDef.push "M #{start_zero_x} #{zero_y}"
+      pathDef.push "L #{points[0].x},#{points[0].y}"
+    else pathDef.push "M #{points[0].x},#{points[0].y}"
+
     num_points = points.length
     for i in [0..num_points - 2]
       xdiff = (points[i+1].x - points[i].x) * @tension
@@ -63,11 +68,10 @@ class Chart.Line extends Base.Linear
       pathDef.push "#{points[i+1].x - xdiff},#{points[i+1].y}"
       pathDef.push "#{points[i+1].x},#{points[i+1].y}"
 
-    pathDef.push "L #{end_zero_x},#{zero_y}"
-    path = new UI.Element("path", {
+    if @fill_item then pathDef.push "L #{end_zero_x},#{zero_y}"
+    path = new UI.Element "path",
       "pointer-events"  : "none"
       "d"               : pathDef.join(" ")
-    })
     path.addClass "index_#{index}"
     @_appendUIElement path
 
@@ -76,3 +80,23 @@ class Chart.Line extends Base.Linear
     @item_anchor_size = @drawable_width / (@data.labels.length - 1)
 
 
+
+
+class Chart.Line extends ChartLine
+  constructor: ->
+    super
+    @fill_item = false
+    @svg.setAttribute "data-svgchart-type", "line"
+    @tension = 0
+
+class Chart.Area extends ChartLine
+  constructor: ->
+    super
+    @svg.setAttribute "data-svgchart-type", "area"
+
+class Chart.Point extends ChartLine
+  constructor: ->
+    super
+    @svg.setAttribute "data-svgchart-type", "point"
+
+  _drawPath: -> @

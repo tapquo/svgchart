@@ -1,6 +1,6 @@
 class Chart.Column extends Base.Linear
 
-  ANIMATION_DURATION = "0.4s"
+  ANIMATION_DURATION = "0.6s"
 
   constructor: ->
     super

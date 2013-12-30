@@ -27,18 +27,18 @@
         var MOCK = {
             labels: ["dia1", "dia2", "dia3", "dia4", "dia5", "dia6", "dia7", "dia8"],
             dataset: [
-                // {
-                //     name  : "Shares",
-                //     style : "blue",
-                //     values: [0, 50, 10, 20, 0, 90, 70, 20]
-                // }
-                // ,
-                // {
-                //     name  : "Views",
-                //     style : "red",
-                //     values: [150, 100, 150, 30, 100, -100, 200, 100]
-                // }
-                // ,
+                {
+                    name  : "Shares",
+                    style : "blue",
+                    values: [0, 50, 10, 20, 0, 90, 70, 20]
+                }
+                ,
+                {
+                    name  : "Views",
+                    style : "red",
+                    values: [150, 100, 150, 30, 100, -100, 200, 100]
+                }
+                ,
                 {
                     name  : "Likes",
                     style : "green",
@@ -49,8 +49,8 @@
         };
 
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Line(container);
-        chart.ruler.setNumDivisors(15);
+        var chart = new Chart.Row(container);
+        chart.ruler.setNumDivisors(5);
         if (chart.setTension) chart.setTension(0.5);
         chart.setData(MOCK);
         chart.draw();

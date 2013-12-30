@@ -6,6 +6,7 @@
   "author"          : "Ignacio Olalde <ina@tapquo.com>",
   "devDependencies" : {
     "grunt-contrib-coffee"  : "*",
+    "grunt-contrib-copy  "  : "*",
     "grunt-contrib-stylus"  : "*",
     "grunt-contrib-uglify"  : "*",
     "grunt-contrib-copy"    : "*",
