@@ -1,13 +1,20 @@
 class Base
 
+  DEFAULT_OPTIONS =
+    marginTop     : 0
+    marginBottom  : 0
+    marginLeft    : 0
+    marginRight   : 0
+
   # Class constructor
   # Intializes common vars and appends svg element to container
   constructor: (@container, options = {}) ->
     @data = []
     @ui_elements = []
-    @margins = top: 0, right: 0, bottom: 0, left: 0
+    @options = Utils.mergeOptions DEFAULT_OPTIONS, options
+    # @margins = top: 0, right: 0, bottom: 0, left: 0
     do @_setWidthHeight
-    do @_calcDrawableArea
+    # do @_calcDrawableArea
     do @_createSVG
     Tooltip.init @container, @svg
 
@@ -16,13 +23,13 @@ class Base
   # @param right Right margin
   # @param bottom Bottom margin
   # @param left Left margin
-  setMargins: (top, right, bottom, left) ->
-    @margins =
-      top     : top or @margins.top
-      right   : right or @margins.right
-      bottom  : bottom or @margins.bottom
-      left    : left or @margins.left
-    do @_calcDrawableArea
+  # setMargins: (top, right, bottom, left) ->
+  #   @margins =
+  #     top     : top or @options.marginTop
+  #     right   : right or @options.marginRight
+  #     bottom  : bottom or @options.marginBottom
+  #     left    : left or @options.marginLeft
+  #   do @_calcDrawableArea
 
   # Sets chart title
   # @param title The title of the chart
@@ -49,8 +56,8 @@ class Base
 
   # Calcs drawable area width and height based on margins
   _calcDrawableArea: ->
-    @drawable_width  = @width - @margins.left - @margins.right
-    @drawable_height = @height - @margins.top - @margins.bottom
+    @drawable_width  = @width - @options.marginLeft - @options.marginRight
+    @drawable_height = @height - @options.marginTop - @options.marginBottom
 
   # Appends an UI element to chart container
   # @param ui The UI element

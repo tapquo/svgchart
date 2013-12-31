@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <title>SVG Charts tests</title>
     <link rel="stylesheet" href="../dist/svgchart.0.0.1.css">
-    <!-- <link rel="stylesheet" href="../dist/svgchart.0.0.1.tooltip.css"> -->
     <style type="text/css">
 
         .chart {
-            background-color: #eee;
-            border: 1px solid #ddd;
+            /*background-color: #eee;*/
+            /*border: 1px solid #ddd;*/
             margin: 0 auto;
             width: 90%;
+            /*width: 700px;*/
             height: 600px;
         }
+
 </style>
 </head>
 <body>
@@ -23,100 +24,38 @@
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
-        var MOCK = [];
+        var MOCK = {
+            labels: ["dia1", "dia2", "dia3", "dia4", "dia5", "dia6", "dia7", "dia8"],
+            dataset: [
+                {
+                    name  : "Shares",
+                    style : "blue",
+                    values: [0, 50, 10, 20, 0, 90, 70, 20]
+                }
+                ,
+                {
+                    name  : "Views",
+                    style : "red",
+                    values: [150, 100, 150, 30, 100, -100, 200, 100]
+                }
+                ,
+                {
+                    name  : "Likes",
+                    style : "green",
+                    values: [15, 10, 15, 43, 30, 10, 50, 10]
+                }
 
-        MOCK.push([
-            { label: "el 0",  value: 0},
-            { label: "el 25",  value: 25},
-            { label: "el 50 pero vamos a poner algo mas largo para verlo en el tooltip",  value: 50},
-            { label: "el 75",  value: 75},
-            { label: "el 100 pero vamos a poner algo mas largo para verlo en el tooltip",  value: 100}
-        ]);
-
-        MOCK.push([
-            { label: "el 150",  value: 150},
-            { label: "el 148",  value: 148},
-            { label: "el 100",  value: 100},
-            { label: "el 50",   value: 50},
-            { label: "el 0",    value: 0},
-            { label: "el 50",   value: 50},
-            { label: "el 148",  value: 148},
-            { label: "el 100",  value: 100},
-            { label: "el 148",  value: 148},
-            { label: "el 0",    value: 0},
-            { label: "el 148",  value: 148},
-            { label: "el 150",  value: 150}
-        ]);
-        MOCK.push([
-            { label: "el 10",  value: 10},
-            { label: "el 12",  value: 12},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 90",  value: 90},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10},
-            { label: "el 10",  value: 10}
-        ]);
-
-
-        // With negative values too
-        MOCK.push([
-            { label: "el -50",  value: -50},
-            { label: "el  50",  value:  50}
-        ]);
-        MOCK.push([
-            { label: "el -25",  value: -25},
-            { label: "el  75",  value:  75}
-        ]);
-        MOCK.push([
-            { label: "el -75",  value: -75},
-            { label: "el  25",  value:  25}
-        ]);
-        MOCK.push([
-            { label: "el -100",  value: -100},
-            { label: "el  0",    value: 0}
-        ]);
-        MOCK.push([
-            { label: "el -200",  value: -200},
-            { label: "el -100",  value: -100}
-        ]);
-        MOCK.push([
-            { label: "el  150",  value: 150},
-            { label: "el  200",  value: 200}
-        ]);
-
-
-
-        var stop = false;
-        var container = document.getElementById("bar_chart");
-        var currentIndex = 0;
-        var chart = new Chart.Line(container);
-
-        var doTest = function() {
-            if(!stop) {
-                var startDate = new Date();
-                chart.clear();
-                mockIndex = currentIndex % (MOCK.length - 1)
-                mockIndex = isNaN(mockIndex) ? 0 : mockIndex
-                chart.setData(MOCK[mockIndex]);
-                // console.debug("["+mockIndex+"] :: ", _getValues(MOCK[mockIndex]).join(", "));
-                chart.draw();
-                currentIndex++;
-            }
-            // setTimeout(doTest, 1000);
+            ]
         };
 
-        document.body.addEventListener("click", function() { stop = !stop; });
-
-        doTest();
+        var container = document.getElementById("bar_chart");
+        var chart = new Chart.Row(container, {
+            marginTop: 2
+        });
+        chart.ruler.setNumDivisors(5);
+        if (chart.setTension) chart.setTension(0.5);
+        chart.setData(MOCK);
+        chart.draw();
 
     </script>
 </body>

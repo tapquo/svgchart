@@ -3,7 +3,6 @@ class Base.Linear extends Base
   # Sets data-svgchart-type to svg and creates ruler
   constructor: ->
     super
-    @bars_padding = 2
     @ruler = new Ruler()
     @width  = 100
     @height = 100
@@ -27,8 +26,8 @@ class Base.Linear extends Base
       factor_w = @calcItemW(dataset.values[index])
       factor_x = @calcItemX(index, dataset.values[index], factor_w, subindex)
       attributes =
-        "x"       : @drawable_width * factor_x + @margins.left
-        "y"       : @drawable_height * factor_y + @margins.top
+        "x"       : @drawable_width * factor_x + @options.marginLeft
+        "y"       : @drawable_height * factor_y + @options.marginTop
         "width"   : @drawable_width * factor_w
         "height"  : @drawable_height * factor_h
       @_drawBar label, dataset, attributes, index, subindex
@@ -50,13 +49,13 @@ class Base.Linear extends Base
     labelAttributes = {"pointer-events"  : "none"}
     if @ruler.axis is "y"
       labelAttributes =
-        "x"               : "#{@item_anchor_size * index + @item_anchor_size / 2 + @margins.left}#{@units}"
-        "y"               : "#{@height - @margins.bottom * 0.5}#{@units}"
+        "x"               : "#{@item_anchor_size * index + @item_anchor_size / 2 + @options.marginLeft}#{@units}"
+        "y"               : "#{@height - @options.marginBottom * 0.5}#{@units}"
         "text-anchor"     : "middle"
     else
       labelAttributes =
-        "x"               : "#{@margins.left}#{@units}"
-        "y"               : "#{@item_anchor_size * index + @item_anchor_size * 0.5 + @margins.top}#{@units}"
+        "x"               : "#{@options.marginLeft}#{@units}"
+        "y"               : "#{@item_anchor_size * index + @item_anchor_size * 0.5 + @options.marginTop}#{@units}"
         "dx"              : "-1#{@units}"
         "dy"              : "1#{@units}"
         "text-anchor"     : "end"
@@ -68,12 +67,17 @@ class Base.Linear extends Base
   # Ruler draw functions
   drawRuler: ->
     @ruler.setLimits @min, @max
-    @ruler.setLinearCoords @drawable_height, @drawable_width, @margins
+    margins =
+      top: @options.marginTop
+      right: @options.marginRight
+      bottom: @options.marginBottom
+      left: @options.marginLeft
+    @ruler.setLinearCoords @drawable_height, @drawable_width, margins
     # lines
     @drawRuleLine @ruler.coords.zero, true
     @drawRuleLine coords for coords in @ruler.coords.lines
     # labels
-    zero_coords = x:@ruler.coords.zero.x1, y: @height - @margins.bottom, label: "0"
+    zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
     # @drawRulerLabel zero_coords, true
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 

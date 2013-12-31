@@ -1,6 +1,5 @@
 Utils =
 
-  mergeOptions: (defaults, options = {}) ->
-    merge = {}
-    merge[key] = (if options[key] then options[key] else value) for key, value of defaults
-    merge
+  mergeOptions: (default_options = {}, options = {}) ->
+    default_options[key] = value for key, value of options
+    default_options

@@ -1,17 +1,26 @@
 class ChartLine extends Base.Linear
 
-  constructor: ->
+  DEFAULT_OPTIONS =
+    marginTop     : 10
+    marginRight   : 10
+    marginBottom  : 10
+    marginLeft    : 10
+
+  constructor: (@container, options = {}) ->
     super
-    @points = []
-    @bars_padding = 0
-    @fill_item = true
-    @tension = 0.5
-    @ruler.axis = "y"
-    @setMargins 10, 10, 10, 10
+    options = Utils.mergeOptions DEFAULT_OPTIONS, options
+    @options = Utils.mergeOptions @options, options
+
+  # constructor: ->
+  #   super
+  #   @fill_item = true
+  #   @options.tension = 0.5
+  #   @ruler.axis = "y"
+  #   # @setMargins 10, 10, 10, 10
 
   setTension: (tension) ->
     if tension >= 0 and tension <= 1
-      @tension = tension
+      @options.tension = tension
       return true
     console.error "Tension value must be >= 0 and <= 1"
     false
@@ -27,10 +36,10 @@ class ChartLine extends Base.Linear
     @_drawSeparators points
 
   _drawItem: (dataset, value, index, subindex) ->
-    zero_y = ((1 - @ruler.zero) * @drawable_height + @margins.top) * @real_height / 100
+    zero_y = ((1 - @ruler.zero) * @drawable_height + @options.marginTop) * @real_height / 100
     factor_y = 1 - Maths.rangeToPercent(value, @ruler.min, @ruler.max)
-    cy = @margins.top + @drawable_height * factor_y
-    cx = @item_anchor_size * subindex + @margins.left
+    cy = @options.marginTop + @drawable_height * factor_y
+    cx = @item_anchor_size * subindex + @options.marginLeft
     attributes =
       r   : 6
       cx  : "#{cx}#{@units}"
@@ -47,23 +56,23 @@ class ChartLine extends Base.Linear
       @_appendUIElement new UI.Element "line",
         x1: point.x
         x2: point.x
-        y1: "#{@margins.top}#{@units}"
-        y2: "#{@margins.top + @drawable_height}#{@units}"
+        y1: "#{@options.marginTop}#{@units}"
+        y2: "#{@options.marginTop + @drawable_height}#{@units}"
         class: "ruler"
 
   _drawItemLabel: (index, point) ->
     label = @data.labels[index]
     labelEl = new UI.Element "text",
       "x"           : point.x
-      "y"           : "#{@height - @margins.bottom / 2}#{@units}"
+      "y"           : "#{@height - @options.marginsbottom / 2}#{@units}"
       "text-anchor" : "middle"
     labelEl.element.textContent = label
     @_appendUIElement labelEl
 
   _drawPath: (points, index) ->
-    start_zero_x = @margins.left * @real_width / 100
-    zero_y = ((1 - @ruler.zero) * @drawable_height + @margins.top) * @real_height / 100
-    end_zero_x = (@margins.left + @drawable_width) * @real_width / 100
+    start_zero_x = @options.marginLeft * @real_width / 100
+    zero_y = ((1 - @ruler.zero) * @drawable_height + @options.marginTop) * @real_height / 100
+    end_zero_x = (@options.marginLeft + @drawable_width) * @real_width / 100
     pathDef = []
     if @fill_item
       pathDef.push "M #{start_zero_x} #{zero_y}"
@@ -72,7 +81,7 @@ class ChartLine extends Base.Linear
 
     num_points = points.length
     for i in [0..num_points - 2]
-      xdiff = (points[i+1].x - points[i].x) * @tension
+      xdiff = (points[i+1].x - points[i].x) * @options.tension
       pathDef.push "C"
       pathDef.push "#{points[i].x + xdiff},#{points[i].y}"
       pathDef.push "#{points[i+1].x - xdiff},#{points[i+1].y}"
@@ -95,15 +104,17 @@ class Chart.Line extends ChartLine
     super
     @fill_item = false
     @svg.setAttribute "data-svgchart-type", "line"
-    @tension = 0
+    @options.tension = 0
 
 class Chart.Area extends ChartLine
   constructor: ->
     super
+    @fill_item = true
     @svg.setAttribute "data-svgchart-type", "area"
 
 class Chart.Point extends ChartLine
   constructor: ->
     super
+    @fill_item = false
     @svg.setAttribute "data-svgchart-type", "point"
     @_drawPath = -> @
