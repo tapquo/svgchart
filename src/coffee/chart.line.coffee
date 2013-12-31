@@ -5,25 +5,12 @@ class ChartLine extends Base.Linear
     marginRight   : 10
     marginBottom  : 10
     marginLeft    : 10
+    bezierTension : 0.5
 
   constructor: (@container, options = {}) ->
     super
     options = Utils.mergeOptions DEFAULT_OPTIONS, options
     @options = Utils.mergeOptions @options, options
-
-  # constructor: ->
-  #   super
-  #   @fill_item = true
-  #   @options.tension = 0.5
-  #   @ruler.axis = "y"
-  #   # @setMargins 10, 10, 10, 10
-
-  setTension: (tension) ->
-    if tension >= 0 and tension <= 1
-      @options.tension = tension
-      return true
-    console.error "Tension value must be >= 0 and <= 1"
-    false
 
   drawItems: ->
     for dataset, index in @data.dataset
@@ -81,7 +68,7 @@ class ChartLine extends Base.Linear
 
     num_points = points.length
     for i in [0..num_points - 2]
-      xdiff = (points[i+1].x - points[i].x) * @options.tension
+      xdiff = (points[i+1].x - points[i].x) * @options.bezierTension
       pathDef.push "C"
       pathDef.push "#{points[i].x + xdiff},#{points[i].y}"
       pathDef.push "#{points[i+1].x - xdiff},#{points[i+1].y}"
@@ -104,7 +91,7 @@ class Chart.Line extends ChartLine
     super
     @fill_item = false
     @svg.setAttribute "data-svgchart-type", "line"
-    @options.tension = 0
+    @options.bezierTension = 0
 
 class Chart.Area extends ChartLine
   constructor: ->

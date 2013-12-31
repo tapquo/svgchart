@@ -1,6 +1,5 @@
 class Chart.Column extends Base.Linear
 
-  @options.animationDuration = "0.6s"
   DEFAULT_OPTIONS =
     marginTop         : 2
     marginRight       : 2
@@ -31,7 +30,7 @@ class Chart.Column extends Base.Linear
     h = @ruler.zero - Maths.rangeToPercent(value, @ruler.min, @ruler.max)
     if h is 0 then 0.01 else Math.abs(h)
 
-  # Returns real X position of a bar based on index
+  # Returns X position of a bar based on index, margins and drawable area
   calcItemX: (index, value, width, index2) ->
     deltaX = (@item_anchor_size - @options.barsPadding) / @data.dataset.length * index2
     ((@item_anchor_size * index + deltaX) + (@options.barsPadding * 0.5)) / @drawable_width

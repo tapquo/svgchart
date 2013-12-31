@@ -54,7 +54,6 @@ document.body.onload = function() {
     areaChart.setData(SIMPLE_MOCK);
     areaChart.draw();
     var areaChart2 = new Chart.Area(document.getElementById("area_multi"));
-    areaChart2.setTension(0.5);
     areaChart2.setData(MULTI_MOCK);
     areaChart2.draw();
 

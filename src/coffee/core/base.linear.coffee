@@ -110,14 +110,14 @@ class Base.Linear extends Base
 
   attachItemEvents: (label, bar, dataset, subindex) ->
     bar.bind "mouseover,touchstart", =>
-      Tooltip.hide()
-      Tooltip.html _tooltipHTML(dataset, subindex)
-      Tooltip.show()
+      @tooltip.hide()
+      @tooltip.html _tooltipHTML(dataset, subindex)
+      @tooltip.show()
       clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout Tooltip.hide, 2000
+      @tooltip_timeout = setTimeout @tooltip.hide, 2000
     bar.bind "mouseleave", (e) =>
       clearTimeout @tooltip_timeout
-      Tooltip.hide()
+      @tooltip.hide()
 
   _setItemAnchorSize: -> @
 

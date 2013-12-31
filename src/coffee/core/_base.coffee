@@ -12,32 +12,9 @@ class Base
     @data = []
     @ui_elements = []
     @options = Utils.mergeOptions DEFAULT_OPTIONS, options
-    # @margins = top: 0, right: 0, bottom: 0, left: 0
     do @_setWidthHeight
-    # do @_calcDrawableArea
     do @_createSVG
-    Tooltip.init @container, @svg
-
-  # Sets drawable area margins in percent
-  # @param top Top margin
-  # @param right Right margin
-  # @param bottom Bottom margin
-  # @param left Left margin
-  # setMargins: (top, right, bottom, left) ->
-  #   @margins =
-  #     top     : top or @options.marginTop
-  #     right   : right or @options.marginRight
-  #     bottom  : bottom or @options.marginBottom
-  #     left    : left or @options.marginLeft
-  #   do @_calcDrawableArea
-
-  # Sets chart title
-  # @param title The title of the chart
-  setTitle: (@title) -> @
-
-  # Sets chart description
-  # @param description The description of the chart
-  setDescription: (@description) -> @
+    @tooltip = Tooltip(@container, @svg).init()
 
   # Sets chart data labels and values
   # @param data The data array of objects {label: '', value: 0}

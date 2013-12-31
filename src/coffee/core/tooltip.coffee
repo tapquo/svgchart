@@ -1,17 +1,14 @@
-Tooltip = do ->
+Tooltip = (container, svg) ->
 
-  _container  = null
+  _container  = container
+  _svg        = svg
   _el         = null
-  _svg        = null
-  _svgPoint   = null
 
-  init = (container, svg) ->
-    _container = container
-    _svg = svg
+  init = ->
     _el = document.createElement "div"
     _el.setAttribute "data-svgchart-tooltip", "true"
     _container.appendChild _el
-    _svgPoint = _svg.createSVGPoint()
+    @
 
   text = (text) -> _el.innerText = text
 
