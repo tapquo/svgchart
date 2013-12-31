@@ -8,5 +8,10 @@ ITEM_BACKGROUND_4       = yellow
 ITEM_BACKGROUND_5       = pink
 ITEM_BACKGROUND_6       = magenta
 
-
 RULER_COLOR       = rgba(0, 0, 0, 0.7)
+
+
+vendor(prop, args)
+  for vendor in webkit moz ms o
+    -{vendor}-{prop} args
+  {prop} args

@@ -71,7 +71,7 @@ class Base.Angular extends Base
   # Draws element arc
   _drawItemArc: (startAngle, endAngle, index, data, factor) ->
     uiel = new UI.Element "path",
-      "class"         : "index_#{index}"
+      "class"         : "item index_#{index}"
       "d"             : @describeArc(startAngle, endAngle, factor)
     @attachItemEvents uiel, data, index
     @_appendUIElement uiel
@@ -87,21 +87,3 @@ class Base.Angular extends Base
     uiel = new UI.Element "text", labelParams
     uiel.element.textContent = Math.round(factor * 100) + "%"
     @_appendUIElement uiel
-
-
-  attachItemEvents: (bar, barData, index) ->
-    bar.bind "mouseover,touchstart", =>
-      @tooltip.hide()
-      @tooltip.html _tooltipHTML(barData, index)
-      @tooltip.show()
-      clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout @tooltip.hide, 2000
-    bar.bind "mouseleave", (e) =>
-      clearTimeout @tooltip_timeout
-      @tooltip.hide()
-
-  _tooltipHTML = (data, index) ->
-    """
-    #{data.name}
-    <h1>#{data.value}</h1>
-    """

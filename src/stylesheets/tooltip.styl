@@ -4,8 +4,8 @@ TOOLTIP_COLOR = #eee
 TRANSITION    = opacity 500ms ease
 
 [data-svgchart-tooltip]
-  -webkit-transition      : TRANSITION
-  -webkit-border-radius   : 5px
+  vendor(transition, TRANSITION)
+  vendor(border-radius, 5px)
   pointer-events          : none
   background-color        : TOOLTIP_BCK
   color                   : #eee
@@ -19,7 +19,7 @@ TRANSITION    = opacity 500ms ease
 
 
   &:before
-    -webkit-transition: TRANSITION
+    vendor(transition, TRANSITION)
     content       : ""
     position      : absolute
     opacity       : 0

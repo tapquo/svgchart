@@ -1,13 +1,19 @@
 
 [data-svgchart-type]
 
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
   // Item elements (bar, point or pie)
   & .item
     fill: ITEM_BACKGROUND_DEFAULT
     stroke: darken(ITEM_BACKGROUND_DEFAULT, ITEM_OPACITY)
-    stroke-width: 2
-    opacity: 0.7
-
+    stroke-width: 1
+    opacity: 0.6
     &:hover
       opacity: 0.9
 
@@ -35,7 +41,6 @@
     fill: ITEM_BACKGROUND_6
     stroke: darken(ITEM_BACKGROUND_6, ITEM_OPACITY)
 
-
   // Ruler
   & .ruler
     stroke: RULER_COLOR
@@ -43,6 +48,7 @@
     stroke-dasharray: 3 3
     opacity: 0.4
     fill: none
+    pointer-events: none
     &.zero
       opacity: 1
       stroke-dasharray: none
@@ -68,12 +74,4 @@
 [data-svgchart-type="area"]
   & path[class*="index_"]
     stroke-width: 4
-    opacity: 0.4
-
-
-// [data-svgchart-type="pie"]
-//   & path[class*="index_"]
-//     stroke-width: 4
-
-
-
+    // opacity: 0.7

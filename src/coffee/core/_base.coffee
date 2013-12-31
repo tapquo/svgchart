@@ -68,3 +68,20 @@ class Base
     @svg.setAttribute "height", "100%"
     @container.appendChild @svg
 
+  attachItemEvents: (uiel, dataset, index) ->
+    uiel.bind "mouseover,touchstart", =>
+      @tooltip.hide()
+      @tooltip.html @tootipHTML(dataset, index)
+      @tooltip.show()
+      clearTimeout @tooltip_timeout
+      @tooltip_timeout = setTimeout @tooltip.hide, 2000
+    uiel.bind "mouseleave", (e) =>
+      clearTimeout @tooltip_timeout
+      @tooltip.hide()
+
+  tootipHTML: (data, index) ->
+    value = if data.values then data.values[index] else data.value
+    """
+    #{data.name}
+    <h1>#{value}</h1>
+    """

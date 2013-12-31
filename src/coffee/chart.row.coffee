@@ -1,7 +1,8 @@
 class Chart.Row extends Base.Linear
 
   DEFAULT_OPTIONS =
-    animationDuration : ".6s"
+    barsPadding       : 1
+    animationDuration : "0.6s"
     marginTop         : 2
     marginRight       : 2
     marginBottom      : 4
@@ -11,7 +12,7 @@ class Chart.Row extends Base.Linear
     super
     @svg.setAttribute "data-svgchart-type", "row"
     options = Utils.mergeOptions DEFAULT_OPTIONS, options
-    @options = Utils.mergeOptions options, @options
+    @options = Utils.mergeOptions @options, options
     @ruler.axis = "x"
 
   # Sets width of the bar

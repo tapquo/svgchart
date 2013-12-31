@@ -8,7 +8,7 @@
 
         .chart {
             /*background-color: #eee;*/
-            /*border: 1px solid #ddd;*/
+            border: 1px solid #ddd;
             margin: 0 auto;
             width: 90%;
             /*width: 700px;*/
@@ -49,11 +49,9 @@
         };
 
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Row(container, {
-            marginTop: 2
-        });
-        chart.ruler.setNumDivisors(5);
-        if (chart.setTension) chart.setTension(0.5);
+        var chart = new Chart.Row(container);
+        // chart.ruler.setNumDivisors(5);
+        // if (chart.setTension) chart.setTension(0.5);
         chart.setData(MOCK);
         chart.draw();
 

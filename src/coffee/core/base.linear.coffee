@@ -41,7 +41,7 @@ class Base.Linear extends Base
       "width"   : "#{attributes.width}#{@units}"
       "height"  : "#{attributes.height}#{@units}"
       "class"   : "item index_#{subindex}"
-    @attachItemEvents label, ui_bar, dataset, index
+    @attachItemEvents ui_bar, dataset, index
     @_appendUIElement ui_bar
     if @_appendAnimation then @_appendAnimation(ui_bar)
 
@@ -78,7 +78,6 @@ class Base.Linear extends Base
     @drawRuleLine coords for coords in @ruler.coords.lines
     # labels
     zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
-    # @drawRulerLabel zero_coords, true
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
   drawRuleLine: (coords, isZero = false) ->
@@ -108,21 +107,4 @@ class Base.Linear extends Base
     uiel.element.textContent = parseFloat(attributes.label).toFixed(2)
     @_appendUIElement uiel
 
-  attachItemEvents: (label, bar, dataset, subindex) ->
-    bar.bind "mouseover,touchstart", =>
-      @tooltip.hide()
-      @tooltip.html _tooltipHTML(dataset, subindex)
-      @tooltip.show()
-      clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout @tooltip.hide, 2000
-    bar.bind "mouseleave", (e) =>
-      clearTimeout @tooltip_timeout
-      @tooltip.hide()
-
   _setItemAnchorSize: -> @
-
-  _tooltipHTML = (data, index) ->
-    """
-    #{data.name}
-    <h1>#{data.values[index]}</h1>
-    """

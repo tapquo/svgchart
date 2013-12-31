@@ -1,12 +1,12 @@
 class Chart.Column extends Base.Linear
 
   DEFAULT_OPTIONS =
+    barsPadding       : 1
+    animationDuration : "0.6s"
     marginTop         : 2
     marginRight       : 2
     marginBottom      : 4
     marginLeft        : 10
-    barsPadding       : 1
-    animationDuration : ".6s"
 
   constructor: (@container, options = {}) ->
     super

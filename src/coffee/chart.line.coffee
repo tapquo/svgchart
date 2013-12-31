@@ -16,27 +16,30 @@ class ChartLine extends Base.Linear
     for dataset, index in @data.dataset
       points = []
       for value, subindex in dataset.values
-        drawn_points = @_drawItem(dataset, value, index, subindex)
-        points.push drawn_points
-        if index is 0 then @_drawItemLabel subindex, drawn_points
+        # drawn_points = @_getPointCoords(dataset, value, index, subindex)
+        point = @_getPointCoords(dataset, value, index, subindex)
+        points.push point
+        if index is 0 then @_drawItemLabel subindex, point
       @_drawPath points, index
+      @_drawDataset points, index, dataset
     @_drawSeparators points
 
-  _drawItem: (dataset, value, index, subindex) ->
+  _getPointCoords: (dataset, value, index, subindex) ->
     zero_y = ((1 - @ruler.zero) * @drawable_height + @options.marginTop) * @real_height / 100
     factor_y = 1 - Maths.rangeToPercent(value, @ruler.min, @ruler.max)
-    cy = @options.marginTop + @drawable_height * factor_y
-    cx = @item_anchor_size * subindex + @options.marginLeft
-    attributes =
-      r   : 6
-      cx  : "#{cx}#{@units}"
-      cy  : "#{cy}#{@units}"
-      class: "item index_#{index}"
-    el = new UI.Element("circle", attributes)
-    @_appendUIElement el
-    @attachItemEvents @data.labels[index], el, dataset, subindex
-    x: cx * @real_width / 100
-    y: cy * @real_height / 100
+    x: (@item_anchor_size * subindex + @options.marginLeft) * @real_width / 100
+    y: (@options.marginTop + @drawable_height * factor_y) * @real_height / 100
+
+  _drawDataset: (points, index, dataset) ->
+    for point, subindex in points
+      attributes =
+        r   : 6
+        cx  : "#{point.x}"
+        cy  : "#{point.y}"
+        class: "item index_#{index}"
+      el = new UI.Element("circle", attributes)
+      @_appendUIElement el
+      @attachItemEvents el, dataset, subindex
 
   _drawSeparators: (points) ->
     for point in points
@@ -51,7 +54,7 @@ class ChartLine extends Base.Linear
     label = @data.labels[index]
     labelEl = new UI.Element "text",
       "x"           : point.x
-      "y"           : "#{@height - @options.marginsbottom / 2}#{@units}"
+      "y"           : "#{@height - @options.marginBottom / 2}#{@units}"
       "text-anchor" : "middle"
     labelEl.element.textContent = label
     @_appendUIElement labelEl
@@ -76,9 +79,8 @@ class ChartLine extends Base.Linear
 
     if @fill_item then pathDef.push "L #{end_zero_x},#{zero_y}"
     path = new UI.Element "path",
-      "pointer-events"  : "none"
+      "class"           : "item index_#{index}"
       "d"               : pathDef.join(" ")
-    path.addClass "index_#{index}"
     @_appendUIElement path
 
   # Sets width of the bar
@@ -87,21 +89,21 @@ class ChartLine extends Base.Linear
 
 
 class Chart.Line extends ChartLine
-  constructor: ->
+  constructor: (@container, options = {}) ->
     super
-    @fill_item = false
     @svg.setAttribute "data-svgchart-type", "line"
-    @options.bezierTension = 0
+    @options.bezierTension = options.bezierTension or 0
+    @fill_item = false
 
 class Chart.Area extends ChartLine
   constructor: ->
     super
-    @fill_item = true
     @svg.setAttribute "data-svgchart-type", "area"
+    @fill_item = true
 
 class Chart.Point extends ChartLine
   constructor: ->
     super
-    @fill_item = false
     @svg.setAttribute "data-svgchart-type", "point"
+    @fill_item = false
     @_drawPath = -> @
