@@ -5,8 +5,6 @@ class Base.Linear extends Base
     super
     @bars_padding = 2
     @ruler = new Ruler()
-
-    # @units  = ""
     @width  = 100
     @height = 100
     @units  = "%"
@@ -80,13 +78,12 @@ class Base.Linear extends Base
     @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
   drawRuleLine: (coords, isZero = false) ->
-    zeroClass = if isZero then " zero" else ""
     line = new UI.Element "line",
       "x1"    : "#{coords.x1}#{@units}"
       "x2"    : "#{coords.x2}#{@units}"
       "y1"    : "#{coords.y1}#{@units}"
       "y2"    : "#{coords.y2}#{@units}"
-      "class" : "ruler#{zeroClass}"
+      "class" : "ruler#{if isZero then " zero" else ""}"
     @_appendUIElement line
 
   drawRulerLabel: (attributes, isZero=false) ->
@@ -117,8 +114,6 @@ class Base.Linear extends Base
     bar.bind "mouseleave", (e) =>
       clearTimeout @tooltip_timeout
       Tooltip.hide()
-
-
 
   _setItemAnchorSize: -> @
 

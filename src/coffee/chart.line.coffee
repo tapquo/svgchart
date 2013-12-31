@@ -24,6 +24,7 @@ class ChartLine extends Base.Linear
         points.push drawn_points
         if index is 0 then @_drawItemLabel subindex, drawn_points
       @_drawPath points, index
+    @_drawSeparators points
 
   _drawItem: (dataset, value, index, subindex) ->
     zero_y = ((1 - @ruler.zero) * @drawable_height + @margins.top) * @real_height / 100
@@ -40,6 +41,15 @@ class ChartLine extends Base.Linear
     @attachItemEvents @data.labels[index], el, dataset, subindex
     x: cx * @real_width / 100
     y: cy * @real_height / 100
+
+  _drawSeparators: (points) ->
+    for point in points
+      @_appendUIElement new UI.Element "line",
+        x1: point.x
+        x2: point.x
+        y1: "#{@margins.top}#{@units}"
+        y2: "#{@margins.top + @drawable_height}#{@units}"
+        class: "ruler"
 
   _drawItemLabel: (index, point) ->
     label = @data.labels[index]
@@ -96,5 +106,4 @@ class Chart.Point extends ChartLine
   constructor: ->
     super
     @svg.setAttribute "data-svgchart-type", "point"
-
-  _drawPath: -> @
+    @_drawPath = -> @
