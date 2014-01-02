@@ -8,18 +8,22 @@ class Base.Linear extends Base
     @height = 100
     @units  = "%"
 
-  # Draws all the chart
+  # Draws the chart
   draw: ->
     super
     do @_setItemAnchorSize
-    do @drawRuler
+    do @_drawRuler
     do @drawItems
 
+  # Draws all chart items
   drawItems: ->
-    @drawItem label, index for label, index in @data.labels
+    @_drawItem label, index for label, index in @data.labels
     @_drawItemSeparator index
 
-  drawItem: (label, index) ->
+  # Draws a chart dataset item
+  # @param label The label
+  # @param index The index position
+  _drawItem: (label, index) ->
     for dataset, subindex in @data.dataset
       factor_h = @calcItemH(dataset.values[index])
       factor_y = @calcItemY(index, dataset.values[index], factor_h, subindex)
@@ -34,8 +38,14 @@ class Base.Linear extends Base
     @_drawBarLabel label, attributes, index
     @_drawItemSeparator index
 
+  # Draws a item bar
+  # @param label The label
+  # @param dataset The dataset
+  # @param attributes The position and size attributes of the elemnt
+  # @param index The dataset index
+  # @param subindex The dataset values index
   _drawBar: (label, dataset, attributes, index, subindex) ->
-    ui_bar = new UI.Element.Bar "rect",
+    ui_bar = new UI.Element "rect",
       "x"       : "#{attributes.x}#{@units}"
       "y"       : "#{attributes.y}#{@units}"
       "width"   : "#{attributes.width}#{@units}"
@@ -45,6 +55,10 @@ class Base.Linear extends Base
     @_appendUIElement ui_bar
     if @_appendAnimation then @_appendAnimation(ui_bar)
 
+  # Draws the item label
+  # @param label The label
+  # @param attributes The ui element attributes
+  # @param index The dataset index
   _drawBarLabel: (label, attributes, index) ->
     labelAttributes = {"pointer-events"  : "none"}
     if @ruler.axis is "y"
@@ -65,7 +79,7 @@ class Base.Linear extends Base
     @_appendUIElement ui_label
 
   # Ruler draw functions
-  drawRuler: ->
+  _drawRuler: ->
     @ruler.setLimits @min, @max
     margins =
       top: @options.marginTop
@@ -74,13 +88,16 @@ class Base.Linear extends Base
       left: @options.marginLeft
     @ruler.setLinearCoords @drawable_height, @drawable_width, margins
     # lines
-    @drawRuleLine @ruler.coords.zero, true
-    @drawRuleLine coords for coords in @ruler.coords.lines
+    @_drawRuleLine @ruler.coords.zero, true
+    @_drawRuleLine coords for coords in @ruler.coords.lines
     # labels
     zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
-    @drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
+    @_drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
-  drawRuleLine: (coords, isZero = false) ->
+  # Draws ruler line
+  # @param coords The line coordinates of the line
+  # @param isZero True if the line indicates 0 position
+  _drawRuleLine: (coords, isZero = false) ->
     line = new UI.Element "line",
       "x1"    : "#{coords.x1}#{@units}"
       "x2"    : "#{coords.x2}#{@units}"
@@ -89,12 +106,14 @@ class Base.Linear extends Base
       "class" : "ruler#{if isZero then " zero" else ""}"
     @_appendUIElement line
 
-  drawRulerLabel: (attributes, isZero=false) ->
+  # Draws ruler label
+  # @param attributes The ui element attributes
+  # @param isZero True if the line indicates 0 position
+  _drawRulerLabel: (attributes, isZero=false) ->
     labelDef =
       "x"           : "#{attributes.x}#{@units}"
       "y"           : "#{attributes.y}#{@units}"
       "class"       : if isZero then "zero" else ""
-
     if @ruler.axis is "y"
       labelDef.dx = "-1#{@units}"
       labelDef.dy = "1#{@units}"
@@ -102,7 +121,6 @@ class Base.Linear extends Base
     else
       labelDef.dy = "2#{@units}"
       labelDef["text-anchor"] = "middle"
-
     uiel = new UI.Element "text", labelDef
     uiel.element.textContent = parseFloat(attributes.label).toFixed(2)
     @_appendUIElement uiel

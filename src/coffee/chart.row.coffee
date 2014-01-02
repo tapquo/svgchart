@@ -19,26 +19,37 @@ class Chart.Row extends Base.Linear
   _setItemAnchorSize: ->
     @item_anchor_size = @drawable_height / @data.labels.length
 
-  # Returns real width of a bar
+  # Returns width factor of a bar bassed on item value
+  # @param value The item value for calc the width
   calcItemW: (value) ->
     w = Math.abs(@ruler.zero - Maths.rangeToPercent(value, @ruler.min, @ruler.max))
     if w is 0 then 0.01 else w
 
   # Returns height factor of a bar
+  # @param value The item value for calc the height
   calcItemH: (value) ->
-    n_datasets = @data.dataset.length
-    h = (@item_anchor_size - @options.barsPadding) / n_datasets / @drawable_height
+    h = Math.abs((@item_anchor_size - @options.barsPadding) / @data.dataset.length / @drawable_height)
     if h is 0 then 0.01 else h
 
-  # Returns real X position of a bar based on index
+  # Returns X position of a bar based on index, margins and drawable area
+  # @param index The dataset index
+  # @param value The value to calc
+  # @param width The width factor of the elemnt
+  # @param index2 The dataset values index
   calcItemX: (index, value, width) ->
     if value < 0 then @ruler.zero - width else @ruler.zero
 
-  # Returns position y factor of a bar
+  # Returns position Y factor of a bar
+  # @param index The dataset index
+  # @param value The value to calc
+  # @param height The height factor of the elemnt
+  # @param index2 The dataset values index
   calcItemY: (index, value, height, index2) ->
     deltaX = (@item_anchor_size - @options.barsPadding) / @data.dataset.length * index2
     ((@item_anchor_size * index + deltaX) + (@options.barsPadding * 0.5)) / @drawable_height
 
+  # Draws a ruler line for separate the item ui elements
+  # @param index The dataset index
   _drawItemSeparator: (index) ->
     y = @item_anchor_size * index + @options.marginTop
     x1 = @options.marginLeft
@@ -51,6 +62,8 @@ class Chart.Row extends Base.Linear
       class: "ruler item_separator"
     @_appendUIElement separator
 
+  # Appends a animation element
+  # @param el The ui element
   _appendAnimation: (el) ->
     el.append new UI.Element "animate",
       "attributeType" : "XML"

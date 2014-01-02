@@ -28,8 +28,41 @@ class Base
     ui.remove() for ui in @ui_elements
     @ui_elements = []
 
+  # Draws the chart, This funcion is completed by chart-type draw function
   draw: ->
     do @_calcDrawableArea
+
+  # ataches events to the ui element
+  # @param uiel The UI Element node
+  # @param dataset The item dataset
+  # @param index Dataset index
+  attachItemEvents: (uiel, dataset, index) ->
+    uiel.bind "mouseover,touchstart", =>
+      @tooltip.hide()
+      @tooltip.html @tootipHTML(dataset, index)
+      @tooltip.show()
+      clearTimeout @tooltip_timeout
+      @tooltip_timeout = setTimeout @tooltip.hide, 2000
+    uiel.bind "mouseleave", (e) =>
+      clearTimeout @tooltip_timeout
+      @tooltip.hide()
+
+  # Generates the tooltip element
+  # @param data The item dataset
+  # @param index Dataset index
+  tootipHTML: (data, index) ->
+    value = if data.values then data.values[index] else data.value
+    """
+    #{data.name}
+    <h1>#{value}</h1>
+    """
+
+  # Creates a svg element to append on it all UI elements
+  _createSVG: ->
+    @svg = document.createElementNS "http://www.w3.org/2000/svg", "svg"
+    @svg.setAttribute "width", "100%"
+    @svg.setAttribute "height", "100%"
+    @container.appendChild @svg
 
   # Calcs drawable area width and height based on margins
   _calcDrawableArea: ->
@@ -42,8 +75,8 @@ class Base
     @ui_elements.push ui
     @svg.appendChild ui.element
 
-  # Sets @max and @min based on @data
-  _setMaxMin: () ->
+  # Sets @max and @min based on values of @data
+  _setMaxMin: ->
     vals = []
     if @data.dataset then vals = vals.concat(dataset.values) for dataset in @data.dataset
     else vals = vals.concat(dataset.value) for dataset in @data
@@ -57,31 +90,7 @@ class Base
     @width = @container.offsetWidth
     @height = @container.offsetHeight
 
+  #@TODO::Complete this function
   # Checks if data is valid
   _validData: ->
     true
-
-  # Creates a svg element to append on it all UI elements
-  _createSVG: ->
-    @svg = document.createElementNS "http://www.w3.org/2000/svg", "svg"
-    @svg.setAttribute "width", "100%"
-    @svg.setAttribute "height", "100%"
-    @container.appendChild @svg
-
-  attachItemEvents: (uiel, dataset, index) ->
-    uiel.bind "mouseover,touchstart", =>
-      @tooltip.hide()
-      @tooltip.html @tootipHTML(dataset, index)
-      @tooltip.show()
-      clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout @tooltip.hide, 2000
-    uiel.bind "mouseleave", (e) =>
-      clearTimeout @tooltip_timeout
-      @tooltip.hide()
-
-  tootipHTML: (data, index) ->
-    value = if data.values then data.values[index] else data.value
-    """
-    #{data.name}
-    <h1>#{value}</h1>
-    """

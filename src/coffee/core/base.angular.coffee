@@ -36,13 +36,17 @@ class Base.Angular extends Base
     @total += parseFloat(dataset.value) for dataset in @data
 
   # Returns cartesian coords of a given angle of the pie
+  # @param angle The angle of the vector
+  # @param radius The lenght of the vector
   polarToCartesian: (angle, radius=null) ->
     radius = radius or @radius
     angle -= Math.PI / 2
     x: @centerX + radius * Math.cos(angle)
     y: @centerY + radius * Math.sin(angle)
 
-  # Creates arc definition for the path element
+  # Returns arc definition for the path element
+  # @param startAngle Defines the start angle of the arc
+  # @param endAngle Defines the end angle of the arc
   describeArc: (startAngle, endAngle, factor=1) ->
     radius = @radius * factor
     start = @polarToCartesian(endAngle, radius)
@@ -54,7 +58,7 @@ class Base.Angular extends Base
       L #{@centerX} #{@centerY}
     """
 
-  # Draws a pie element
+  # Draws chart pie elements
   drawItems: ->
     startAngle = 0
     for data, index in @data
@@ -64,19 +68,17 @@ class Base.Angular extends Base
       angle = 2 * Math.PI * factor
       endAngle = startAngle + angle
       color_index =  index % NUM_COLORS
-      @_drawItemArc startAngle, endAngle, color_index, data #, factor
+      uiel = new UI.Element "path",
+        "class"         : "item index_#{color_index}"
+        "d"             : @describeArc(startAngle, endAngle)
+      @attachItemEvents uiel, data, color_index
+      @_appendUIElement uiel
       @_drawItemLabel (startAngle + angle * 0.5), "#{label} (#{value})", factor, color_index
       startAngle += angle
 
-  # Draws element arc
-  _drawItemArc: (startAngle, endAngle, index, data, factor) ->
-    uiel = new UI.Element "path",
-      "class"         : "item index_#{index}"
-      "d"             : @describeArc(startAngle, endAngle, factor)
-    @attachItemEvents uiel, data, index
-    @_appendUIElement uiel
-
   # Draws element arc label
+  # @param angle Defines the angle to positionate the label
+  # @endAngle Defines the end angle of the arc
   _drawItemLabel: (angle, value, factor, color) ->
     labelPos = @polarToCartesian(angle, @radius - 10)
     labelParams =
