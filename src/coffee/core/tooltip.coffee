@@ -31,9 +31,9 @@ Tooltip = (container, svg) ->
     _container.removeEventListener "mousemove", _onMove
 
   # Tooltip onMouseMove listener function
-  _onMove = ->
-    _el.style.top = "#{event.pageY - 20}px"
-    _el.style.left = "#{event.pageX + 20}px"
+  _onMove = (e=event) ->
+    _el.style.top = "#{e.pageY - 20}px"
+    _el.style.left = "#{e.pageX + 20}px"
 
 
   init: init

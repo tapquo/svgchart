@@ -116,7 +116,7 @@ class Chart.Area extends ChartLine
     @fill_item = true
 
 class Chart.Point extends ChartLine
-  constructor: ->
+  constructor: (@container, options = {}) ->
     super
     @svg.setAttribute "data-svgchart-type", "point"
     @options.bezierTension = options.bezierTension or @options.bezierTension
