@@ -3,3 +3,4 @@ temp/
 node_modules/
 site/components/
 site/js
+site/components/svgchart/svgchart.js
