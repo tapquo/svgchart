@@ -35,7 +35,7 @@ class Base.Linear extends Base
         "width"   : @drawable_width * factor_w
         "height"  : @drawable_height * factor_h
       @_drawBar label, dataset, attributes, index, subindex
-    if not @options.withoutRuler then @_drawBarLabel label, attributes, index
+    if not @options.withoutXRuler then @_drawBarLabel label, attributes, index
     @_drawItemSeparator index
 
   # Draws a item bar
@@ -80,18 +80,22 @@ class Base.Linear extends Base
 
   # Ruler draw functions
   _drawRuler: ->
-    if @options.drawRuler is false then @options.withoutRuler = true
+    if @options.drawXRuler is false and @options.drawYRuler is false
+      @options.withoutXRuler = true
+      @options.withoutYRuler = true
+    else if @options.drawXRuler is false then @options.withoutXRuler = true
+    else if @options.drawYRuler is false then @options.withoutYRuler = true
+
     @ruler.setLimits @min, @max
-    # if not @options.withoutRuler then console.log "no tiene que pintarse nada"
     margins =
       top: @options.marginTop
       right: @options.marginRight
       bottom: @options.marginBottom
       left: @options.marginLeft
     @ruler.setLinearCoords @drawable_height, @drawable_width, margins
-    if not @options.withoutRuler
+    if not @options.withoutXRuler then @_drawRuleLine @ruler.coords.zero, true
+    if not @options.withoutYRuler
       # lines
-      @_drawRuleLine @ruler.coords.zero, true
       @_drawRuleLine coords for coords in @ruler.coords.lines
       # labels
       zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
@@ -101,6 +105,7 @@ class Base.Linear extends Base
   # @param coords The line coordinates of the line
   # @param isZero True if the line indicates 0 position
   _drawRuleLine: (coords, isZero = false) ->
+    if @options.withoutXRuler then isZero = false
     line = new UI.Element "line",
       "x1"    : "#{coords.x1}#{@units}"
       "x2"    : "#{coords.x2}#{@units}"

@@ -59,10 +59,11 @@
             ]
         };
         var options = {
-            drawRuler: false
+            drawXRuler: true,
+            drawYRuler: true,
         };
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Column(container, options);
+        var chart = new Chart.Column(container);
         if(chart.setData(MOCK)) chart.draw();
 
     </script>

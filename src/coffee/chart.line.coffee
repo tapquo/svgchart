@@ -19,7 +19,7 @@ class ChartLine extends Base.Linear
       for value, subindex in dataset.values
         point = @_getPointCoords(dataset, value, index, subindex)
         points.push point
-        if not @options.withoutRuler and index is 0
+        if not @options.withoutXRuler and index is 0
           @_drawItemLabel subindex, point
       @_drawPath points, index
       @_drawDataset points, index, dataset
