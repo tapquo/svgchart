@@ -24,36 +24,44 @@
     <script type="text/javascript" src="../dist/svgchart.0.0.1.debug.js"></script>
     <script type="text/javascript">
 
+        // var MOCK = {
+        //     labels: ["dia1", "dia2", "dia3", "dia4", "dia5", "dia6", "dia7", "dia8"],
+        //     dataset: [
+        //         {
+        //             name  : "Puntos estimados",
+        //             style : "blue",
+        //             values: [0, 50, 10, 20, 0, 90, 70, 20]
+        //         },
+        //         {
+        //             name  : "Views",
+        //             style : "red",
+        //             values: [150, 100, 150, 30, 100, -100, 200, 100]
+        //         },
+        //         {
+        //             name  : "Likes",
+        //             style : "green",
+        //             values: [15, 10, 15, 43, 30, 10, 50, 10]
+        //         }
+        //     ]
+        // };
+
         var MOCK = {
-            labels: ["dia1", "dia2", "dia3", "dia4", "dia5", "dia6", "dia7", "dia8"],
+            labels: ["1", "2", "3", "4", "5", "6"],
             dataset: [
                 {
-                    name  : "Shares",
-                    style : "blue",
-                    values: [0, 50, 10, 20, 0, 90, 70, 20]
-                }
-                ,
+                    name  : "Puntos estimados",
+                    values: [0,1,5,4,"s",12]
+                },
                 {
-                    name  : "Views",
-                    style : "red",
-                    values: [150, 100, 150, 30, 100, -100, 200, 100]
+                    name  : "Puntos estimados2222",
+                    values: [1,4,7,8,4,54]
                 }
-                ,
-                {
-                    name  : "Likes",
-                    style : "green",
-                    values: [15, 10, 15, 43, 30, 10, 50, 10]
-                }
-
             ]
         };
 
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Row(container);
-        // chart.ruler.setNumDivisors(5);
-        // if (chart.setTension) chart.setTension(0.5);
-        chart.setData(MOCK);
-        chart.draw();
+        var chart = new Chart.Column(container);
+        if(chart.setData(MOCK)) chart.draw();
 
     </script>
 </body>

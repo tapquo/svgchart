@@ -2,6 +2,9 @@ class Base
 
   DEFAULT_OPTIONS =
     marginTop     : 0
+
+
+
     marginBottom  : 0
     marginLeft    : 0
     marginRight   : 0
@@ -21,6 +24,7 @@ class Base
   # example: [{label: '2012', value: 10}, {2013: '', value: 15}]
   setData: (@data) ->
     do @_setMaxMin
+    if @max is 0 and @min is 0 then return false
     @num_datasets = if @data.dataset then @data.dataset.length else @data.length
 
   # Removes all created ui elements of the chart
@@ -56,6 +60,10 @@ class Base
     #{data.name}
     <h1>#{value}</h1>
     """
+
+  onError: (callback) ->
+    @error_callback = callback
+
 
   # Creates a svg element to append on it all UI elements
   _createSVG: ->
