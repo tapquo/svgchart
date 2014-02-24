@@ -35,7 +35,7 @@ class Base.Linear extends Base
         "width"   : @drawable_width * factor_w
         "height"  : @drawable_height * factor_h
       @_drawBar label, dataset, attributes, index, subindex
-    @_drawBarLabel label, attributes, index
+    if not @options.withoutRuler then @_drawBarLabel label, attributes, index
     @_drawItemSeparator index
 
   # Draws a item bar
@@ -82,13 +82,14 @@ class Base.Linear extends Base
   _drawRuler: ->
     if @options.drawRuler is false then @options.withoutRuler = true
     @ruler.setLimits @min, @max
+    # if not @options.withoutRuler then console.log "no tiene que pintarse nada"
+    margins =
+      top: @options.marginTop
+      right: @options.marginRight
+      bottom: @options.marginBottom
+      left: @options.marginLeft
+    @ruler.setLinearCoords @drawable_height, @drawable_width, margins
     if not @options.withoutRuler
-      margins =
-        top: @options.marginTop
-        right: @options.marginRight
-        bottom: @options.marginBottom
-        left: @options.marginLeft
-      @ruler.setLinearCoords @drawable_height, @drawable_width, margins
       # lines
       @_drawRuleLine @ruler.coords.zero, true
       @_drawRuleLine coords for coords in @ruler.coords.lines
