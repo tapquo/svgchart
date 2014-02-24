@@ -50,7 +50,7 @@
             dataset: [
                 {
                     name  : "Puntos estimados",
-                    values: [0,1,5,4,"s",12]
+                    values: [0,1,5,4,1,12]
                 },
                 {
                     name  : "Puntos estimados2222",
@@ -58,9 +58,11 @@
                 }
             ]
         };
-
+        var options = {
+            drawRuler: false
+        };
         var container = document.getElementById("bar_chart");
-        var chart = new Chart.Column(container);
+        var chart = new Chart.Line(container, options);
         if(chart.setData(MOCK)) chart.draw();
 
     </script>
