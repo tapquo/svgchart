@@ -1,5 +1,5 @@
 dist/
 temp/
 node_modules/
-site/components
+site/components/
 site/js
