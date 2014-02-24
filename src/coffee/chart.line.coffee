@@ -14,13 +14,12 @@ class ChartLine extends Base.Linear
 
   # Draws all items of the chart (Base.Line override)
   drawItems: ->
-    if @options.drawRuler is false then withoutRuler = true
     for dataset, index in @data.dataset
       points = []
       for value, subindex in dataset.values
         point = @_getPointCoords(dataset, value, index, subindex)
         points.push point
-        if not withoutRuler and index is 0
+        if not @options.withoutRuler and index is 0
           @_drawItemLabel subindex, point
       @_drawPath points, index
       @_drawDataset points, index, dataset

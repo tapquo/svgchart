@@ -80,19 +80,21 @@ class Base.Linear extends Base
 
   # Ruler draw functions
   _drawRuler: ->
+    if @options.drawRuler is false then @options.withoutRuler = true
     @ruler.setLimits @min, @max
-    margins =
-      top: @options.marginTop
-      right: @options.marginRight
-      bottom: @options.marginBottom
-      left: @options.marginLeft
-    @ruler.setLinearCoords @drawable_height, @drawable_width, margins
-    # lines
-    @_drawRuleLine @ruler.coords.zero, true
-    @_drawRuleLine coords for coords in @ruler.coords.lines
-    # labels
-    zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
-    @_drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
+    if not @options.withoutRuler
+      margins =
+        top: @options.marginTop
+        right: @options.marginRight
+        bottom: @options.marginBottom
+        left: @options.marginLeft
+      @ruler.setLinearCoords @drawable_height, @drawable_width, margins
+      # lines
+      @_drawRuleLine @ruler.coords.zero, true
+      @_drawRuleLine coords for coords in @ruler.coords.lines
+      # labels
+      zero_coords = x:@ruler.coords.zero.x1, y: @height - @options.marginBottom, label: "0"
+      @_drawRulerLabel(labelData) for labelData, i in @ruler.coords.labels
 
   # Draws ruler line
   # @param coords The line coordinates of the line
