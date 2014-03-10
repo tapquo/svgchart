@@ -88,7 +88,8 @@ class Base
     vals = []
     if @data.dataset then vals = vals.concat(dataset.values) for dataset in @data.dataset
     else vals = vals.concat(dataset.value) for dataset in @data
-    @max = Maths.max(vals)
+    maxValue = if @options.maxValue then @options.maxValue else Maths.max(vals)
+    @max = maxValue
     @min = Maths.min(vals)
 
   # Sets container width and heigth
