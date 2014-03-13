@@ -45,7 +45,7 @@ class Ruler
     @coords.labels = []
     for value in @divisors.reverse()
       @coords.lines.push {x1:x1, x2:x2, y1:y, y2:y}
-      @coords.labels.push {x:margin.left, y:y, label: value}
+      @coords.labels.push {x:margin.left, y:y, label: Math.floor(value).toFixed()}
       y += delta
 
     # (1 - @zero) cause inverted coords of y axis n screens
