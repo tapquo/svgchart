@@ -7,6 +7,8 @@ class Chart.Row extends Base.Linear
     marginRight       : 2
     marginBottom      : 4
     marginLeft        : 10
+    withoutYRuler     : false
+    withoutXRuler     : false
 
   constructor: (@container, options = {}) ->
     super

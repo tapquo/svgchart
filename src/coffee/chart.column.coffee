@@ -2,22 +2,28 @@ class Chart.Column extends Base.Linear
 
   DEFAULT_OPTIONS =
     barsPadding       : 1
+    showAnimation     : true
     animationDuration : "0.6s"
     marginTop         : 2
     marginRight       : 2
     marginBottom      : 4
     marginLeft        : 10
+    withoutYRuler     : false
+    withoutXRuler     : false
 
   constructor: (@container, options = {}) ->
     super
+    widthColumn = options.widthColumn
     @svg.setAttribute "data-svgchart-type", "bar"
     options = Utils.mergeOptions DEFAULT_OPTIONS, options
     @options = Utils.mergeOptions @options, options
+    @options.widthColumn = widthColumn
     @ruler.axis = "y"
 
   # Sets width of the bar
   _setItemAnchorSize: ->
-    @item_anchor_size = @drawable_width / @data.labels.length
+    width = if @options.widthColumn? then @options.widthColumn else (@drawable_width / @data.labels.length)
+    @item_anchor_size = width
 
   # Returns width factor of a bar bassed on item value
   # @param value The item value for calc the width
@@ -66,20 +72,21 @@ class Chart.Column extends Base.Linear
   # Appends a animation element
   # @param el The ui element
   _appendAnimation: (el) ->
-    el.append new UI.Element "animate",
-      "attributeType" : "XML"
-      "attributeName" : "height"
-      "begin"         : "0s"
-      "dur"           : @options.animationDuration
-      "fill"          : "freeze"
-      "from"          : "0"
-      "to"            : el.attr("height")
-    if parseFloat(el.attr("y")) < @ruler.coords.zero.y1
+    if @options.showAnimation is true
       el.append new UI.Element "animate",
         "attributeType" : "XML"
-        "attributeName" : "y"
+        "attributeName" : "height"
         "begin"         : "0s"
         "dur"           : @options.animationDuration
         "fill"          : "freeze"
-        "from"          : "#{@ruler.coords.zero.y1}%"
-        "to"            : el.attr("y")
+        "from"          : "0"
+        "to"            : el.attr("height")
+      if parseFloat(el.attr("y")) < @ruler.coords.zero.y1
+        el.append new UI.Element "animate",
+          "attributeType" : "XML"
+          "attributeName" : "y"
+          "begin"         : "0s"
+          "dur"           : @options.animationDuration
+          "fill"          : "freeze"
+          "from"          : "#{@ruler.coords.zero.y1}%"
+          "to"            : el.attr("y")

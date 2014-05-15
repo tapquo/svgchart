@@ -6,6 +6,8 @@ class ChartLine extends Base.Linear
     marginBottom  : 10
     marginLeft    : 10
     bezierTension : 0.5
+    withoutYRuler : false
+    withoutXRuler : false
 
   constructor: (@container, options = {}) ->
     super
