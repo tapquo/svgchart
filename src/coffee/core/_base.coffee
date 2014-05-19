@@ -14,7 +14,8 @@ class Base
     @options = Utils.mergeOptions DEFAULT_OPTIONS, options
     do @_setWidthHeight
     do @_createSVG
-    @tooltip = Tooltip(@container, @svg).init()
+    if @options.tooltip isnt false
+      @tooltip = Tooltip(@container, @svg).init()
 
   # Sets chart data labels and values
   # @param data The data array of objects {label: '', value: 0}
@@ -38,15 +39,16 @@ class Base
   # @param dataset The item dataset
   # @param index Dataset index
   attachItemEvents: (uiel, dataset, index) ->
-    uiel.bind "mouseover,touchstart", =>
-      @tooltip.hide()
-      @tooltip.html @tootipHTML(dataset, index)
-      @tooltip.show()
-      clearTimeout @tooltip_timeout
-      @tooltip_timeout = setTimeout @tooltip.hide, 2000
-    uiel.bind "mouseleave", (e) =>
-      clearTimeout @tooltip_timeout
-      @tooltip.hide()
+    if @options.tooltip isnt false
+      uiel.bind "mouseover,touchstart", =>
+        @tooltip.hide()
+        @tooltip.html @tootipHTML(dataset, index)
+        @tooltip.show()
+        clearTimeout @tooltip_timeout
+        @tooltip_timeout = setTimeout @tooltip.hide, 2000
+      uiel.bind "mouseleave", (e) =>
+        clearTimeout @tooltip_timeout
+        @tooltip.hide()
 
   # Generates the tooltip element
   # @param data The item dataset
