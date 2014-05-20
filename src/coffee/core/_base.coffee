@@ -5,6 +5,7 @@ class Base
     marginBottom  : 0
     marginLeft    : 0
     marginRight   : 0
+    showTooltip   : true
 
   # Class constructor
   # Intializes common vars and appends svg element to container
@@ -14,7 +15,7 @@ class Base
     @options = Utils.mergeOptions DEFAULT_OPTIONS, options
     do @_setWidthHeight
     do @_createSVG
-    if @options.tooltip isnt false
+    if @options.showTooltip
       @tooltip = Tooltip(@container, @svg).init()
 
   # Sets chart data labels and values
@@ -39,7 +40,7 @@ class Base
   # @param dataset The item dataset
   # @param index Dataset index
   attachItemEvents: (uiel, dataset, index) ->
-    if @options.tooltip isnt false
+    if @options.showTooltip
       uiel.bind "mouseover,touchstart", =>
         @tooltip.hide()
         @tooltip.html @tootipHTML(dataset, index)
