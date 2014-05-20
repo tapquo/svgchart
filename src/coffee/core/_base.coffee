@@ -15,8 +15,7 @@ class Base
     @options = Utils.mergeOptions DEFAULT_OPTIONS, options
     do @_setWidthHeight
     do @_createSVG
-    if @options.showTooltip
-      @tooltip = Tooltip(@container, @svg).init()
+    if @options.showTooltip then @tooltip = Tooltip(@container, @svg).init()
 
   # Sets chart data labels and values
   # @param data The data array of objects {label: '', value: 0}

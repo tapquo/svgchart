@@ -13,11 +13,9 @@ class Chart.Column extends Base.Linear
 
   constructor: (@container, options = {}) ->
     super
-    widthColumn = options.widthColumn
     @svg.setAttribute "data-svgchart-type", "bar"
     options = Utils.mergeOptions DEFAULT_OPTIONS, options
     @options = Utils.mergeOptions @options, options
-    @options.widthColumn = widthColumn
     @ruler.axis = "y"
 
   # Sets width of the bar
